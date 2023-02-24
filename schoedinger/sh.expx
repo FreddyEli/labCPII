@@ -1,0 +1,20 @@
+ <x> for level           1  is   0.50000030172103571     
+ <x2> for level           1  is   0.28267265724187918     
+ <x2>-<x>^2 for level           1  is    3.2672355520752427E-002
+ sqrt(<x2>-<x>^2) for level           1  is   0.18075495987870549     
+  
+ <x> for level           2  is   0.49751567672071922     
+ <x2> for level           2  is   0.31818732784615422     
+ <x2>-<x>^2 for level           2  is    7.0665479263279013E-002
+ sqrt(<x2>-<x>^2) for level           2  is   0.26582979378406590     
+  
+ <x> for level           3  is   0.50000266058432352     
+ <x2> for level           3  is   0.32770192652861413     
+ <x2>-<x>^2 for level           3  is    7.7699265937211881E-002
+ sqrt(<x2>-<x>^2) for level           3  is   0.27874588057442551     
+  
+ <x> for level           4  is   0.49754373088063891     
+ <x2> for level           4  is   0.32770554995026574     
+ <x2>-<x>^2 for level           4  is    8.0155785811640096E-002
+ sqrt(<x2>-<x>^2) for level           4  is   0.28311797154479629     
+  

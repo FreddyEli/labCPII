@@ -2,17 +2,18 @@ program main
 !        use integrals
         use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
         implicit none
-        integer,parameter :: n=100
+        integer,parameter :: n=400, niveles=4
         real(dp),parameter :: x0=0, xf=1, fx0=1, fxf=1
         integer::i,j
-        real(dp)::x,h,a(n),b(n),c(n),d(n),l(n),u(n),z(n),w(0:n+1), int_y
+        real(dp)::x,h,a(n),b(n),c(n),d(n),l(n),u(n),z(n),w(0:n+1), int_y, fs(0:n+1, 0:niveles), ort(niveles,niveles), dummy, dummy2
         h=(xf-x0)/(n+1)
         w(0)=fx0
         w(n+1)=fxf
 print*, size(w)
 open(101,file="sh_n.dat")
 open(100,file="sh.dat")
-     do j=1,3
+open(99,file="sh_n2.dat")
+     do j=1,niveles
 x=x0+h
 a(1)=2+h*h*q(j,x) 
 b(1)=-1+h*p(x)/2 
@@ -59,19 +60,57 @@ do i = n-1,1,-1
 w(i)=z(i)-u(i)*w(i+1)
 enddo
 do i=0,n+1
-write(100,*) x0+i*h, w(i)
+if (j==1) then
+        fs(i,0)= x0+i*h
+endif
+write(100,*) fs(i,0), w(i)
 enddo
 write(100,*)  " "
 int_y=simple_integral(h,w)
 int_y=int_y
 
 do i=0,n+1
-write(101,*) x0+i*h, w(i)/sqrt(int_y)
+fs(i,j)=w(i)/sqrt(int_y)
+write(101,*) fs(i,0), fs(i,j)
+write(99,*) fs(i,0), fs(i,j)*fs(i,j)
 enddo
 write(101,*)  " "
+write(99,*)  " "
 enddo
+close(99)
 close(100)
 close(101)
+
+do i=1,niveles
+do j=1,niveles
+ort(i,j)=double_integral(h,fs(:,i),fs(:,j))
+enddo
+enddo
+
+
+open(102,file="sh.ortm")
+do i=1,niveles
+write(102,*) ort(:,i)
+enddo
+close(102)
+
+open(103,file="sh.expx")
+do i=1,niveles
+dummy=expx(h,fs(:,0),fs(:,i))
+dummy2=expx2(h,fs(:,0),fs(:,i))
+write(103,*) "<x> for level",i," is ", dummy
+write(103,*) "<x2> for level",i," is ", dummy2
+write(103,*) "<x2>-<x>^2 for level",i," is ", dummy2-dummy*dummy
+write(103,*) "sqrt(<x2>-<x>^2) for level",i," is ", sqrt(dummy2-dummy*dummy)
+write(103,*) " "
+enddo
+close(103)
+
+!print*, 
+
+!open(103,file="sh.peaks")
+!close(103)
+
 
 contains
 
@@ -95,7 +134,7 @@ real(dp) function r(x) result(f)
   f = 0D0
 end function r
 
-        real(dp) function simple_integral(h,y) result(f)
+real(dp) function simple_integral(h,y) result(f)
         real(dp), intent(in) :: h, y(0:)
         integer ::i
         f=y(0)*y(0)
@@ -106,8 +145,8 @@ end function r
              f=f+2*y(2*i)*y(2*i)
         enddo
         f=f+y(size(y)-1)*y(size(y)-1)
-f=f*3*h/8
-        end function simple_integral
+        f=f*3*h/8
+end function simple_integral
 
         real(dp) function double_integral(h,y,w) result(f)
         real(dp), intent(in) :: h, y(0:), w(0:)
@@ -123,6 +162,35 @@ f=f*3*h/8
 f=f*3*h/8
         end function double_integral
 
+        real(dp) function expx(h,x,w) result(f)
+        real(dp), intent(in) :: h, x(0:), w(0:)
+        integer ::i
+        f=x(0)*w(0)*w(0)
+        do i=1, (size(w)-1)/2
+             f=f+4*x(2*i-1)*w(2*i-1)*w(2*i-1)
+        enddo
+        do i=2, (size(w)-1)/2-1
+             f=f+2*w(2*i)*w(2*i)*x(2*i)
+        enddo
+        f=f+x(size(x)-1)*w(size(w)-1)*w(size(w)-1)
+f=f*3*h/8
+        end function 
         
+        real(dp) function expx2(h,x,w) result(f)
+        real(dp), intent(in) :: h, x(0:), w(0:)
+        integer ::i
+        f=x(0)*x(0)*w(0)*w(0)
+        do i=1, (size(w)-1)/2
+             f=f+4*x(2*i-1)*x(2*i-1)*w(2*i-1)*w(2*i-1)
+        enddo
+        do i=2, (size(w)-1)/2-1
+             f=f+2*w(2*i)*w(2*i)*x(2*i)*x(2*i)
+        enddo
+        f=f+x(size(x)-1)*x(size(x)-1)*w(size(w)-1)*w(size(w)-1)
+f=f*3*h/8
+        end function 
+
+
 end program
+
 
