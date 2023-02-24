@@ -1,0 +1,15 @@
+## Ecuación de calor
+### 1D
+u_{xx} =k U_{t}
+### 2D
+#### Sencilla
+\nabla^2 u =k U_{t}
+#### General
+\dv{}{x}(k_{1} \dv{u}{x}) + \dv{}{y}(k_{1} \dv{u}{y}) + = c \rho U_{t}
+
+
+## Ecuación de Pisson
+\nabla^2 u = f(x)
+### En electro
+\nabla^2 \phi(\vec{r}i
+
