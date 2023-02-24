@@ -1,11 +1,13 @@
 program main
   use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
   implicit none
+  real(dp), parameter::pi=3.14159265
   integer,parameter :: n=400, niveles=4
   real(dp),parameter :: x0=0, xf=1, fx0=1, fxf=1
   integer::i,j
   real(dp)::x,h,a(n),b(n),c(n),d(n),l(n),u(n),z(n),w(0:n+1),int_y
   real(dp)::fs(0:n+1,0:niveles),ort(niveles,niveles),dummy,dummy2,sigma
+  real(dp)::fo(0:n+1,0:niveles)
 
 h=(xf-x0)/(n+1)
 w(0)=fx0
@@ -50,12 +52,13 @@ enddo
 l(n)=a(n)-c(n)*u(n-1)
 z(n)=(d(n)-c(n)*z(n-1))/l(n)
 
-do i = 1,n
-        w(i)=z(i)-fx0
-enddo
 
 do i = n-1,1,-1
         w(i)=z(i)-u(i)*w(i+1)
+enddo
+
+do i = 0,n+1
+        w(i)=w(i)-fx0
 enddo
 
 do i=0,n+1
@@ -66,7 +69,6 @@ do i=0,n+1
 enddo
 write(100,*)  " "
 int_y=simple_integral(h,w)
-int_y=int_y
 
 do i=0,n+1
         fs(i,j)=w(i)/sqrt(int_y)
@@ -114,6 +116,52 @@ do i=1,niveles
 enddo
 close(103)
 
+
+open(104,file="sh.err")
+  !w(0:n+1)
+fo(:,0)=fs(:,0)
+do i=1,niveles
+
+    if (i==1) then
+fo(:,i)=sin(i*pi*fs(:,0))
+ else if (MOD(i,2)==0) then
+fo(:,i)=sin(i*pi*fs(:,0))
+else
+fo(:,i)=-sin(i*pi*fs(:,0))
+endif
+
+int_y=simple_integral(h,fo(:,i))
+fo(:,i)=fo(:,i)/sqrt(int_y)
+
+        dummy=expx(h,fs(:,0),fo(:,i))
+        dummy2=expx2(h,fs(:,0),fo(:,i))
+        sigma=sqrt(dummy2-dummy*dummy)
+        write(104,*) "       <x> theorethical for level",i," is ", dummy
+        write(104,*) "      <x2> theorethical for level",i," is ", dummy2
+        write(104,*) "<x2>-<x>^2 theorethical for level",i," is ", dummy2-dummy*dummy
+        write(104,*) "        SD theorethical for level",i," is ", sigma
+        write(104,*) "Theorethical probability to to find electron between x+sigma and x-sigma"
+        write(104,*)  prob(h,fo(:,0),fo(:,i), dummy-sigma , dummy+sigma)
+        write(104,*) "Theorethical probability to to find electron between 0.45 and 0.55"
+        write(104,*)  prob(h,fo(:,0),fo(:,i), 0.45D0, 0.55D0)
+        write(104,*) "Theorethical probability to to find electron on the left side"
+        write(104,*)  prob(h,fo(:,0),fo(:,i), 0D0, 0.5D0)
+        write(104,*) "Probability to to find electron on the first quarter"
+        write(104,*)  prob(h,fo(:,0),fo(:,i), 0D0, 0.25D0)
+        write(104,*) " "
+enddo
+        write(104,*) " "
+fo=fo-fs
+do i=1,niveles
+        dummy=sum(fo(:,i))/size(fo(:,i))
+        dummy2=sqrt(sum(fo(:,i)*fo(:,i))/size(fo(:,i)))
+        write(104,*) "         Average error",i," is ", dummy
+        dummy=sum(abs(fo(:,i)))/size(fo(:,i))
+        write(104,*) "Average absolute error",i," is ", dummy
+        write(104,*) "             RMS error",i," is ", dummy
+        write(104,*) " "
+enddo
+close(104)
 
 contains
 real(dp) function p(r) result(f)

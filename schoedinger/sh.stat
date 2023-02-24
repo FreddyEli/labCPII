@@ -1,52 +1,52 @@
-        <x> for level           1  is   0.50000030172103582     
-       <x2> for level           1  is   0.28267265724187901     
- <x2>-<x>^2 for level           1  is    3.2672355520752150E-002
-         SD for level           1  is   0.18075495987870471     
+        <x> for level           1  is   0.49750793699518542     
+       <x2> for level           1  is   0.27989425941852175     
+ <x2>-<x>^2 for level           1  is    3.2380112045316378E-002
+         SD for level           1  is   0.17994474720123502     
  Probability to to find electron between x+sigma and x-sigma
-  0.65374466946734044     
+  0.65599671147813188     
  Probability to to find electron between 0.45 and 0.55
-  0.20756883850908123     
+  0.20839542597545632     
  Probability to to find electron on the left side
-  0.51246768788653652     
+  0.51752478894059739     
  Probability to to find electron on the first quarter
-   9.2725714893521549E-002
+   9.4147000379138160E-002
   
-        <x> for level           2  is   0.49751567672071900     
-       <x2> for level           2  is   0.31818732784615439     
- <x2>-<x>^2 for level           2  is    7.0665479263279402E-002
-         SD for level           2  is   0.26582979378406663     
+        <x> for level           2  is   0.50372075589153997     
+       <x2> for level           2  is   0.32437752729611080     
+ <x2>-<x>^2 for level           2  is    7.0642927380166420E-002
+         SD for level           2  is   0.26578737249945944     
  Probability to to find electron between x+sigma and x-sigma
-  0.56705933946532350     
+  0.56740668652311010     
  Probability to to find electron between 0.45 and 0.55
-   7.6963400583573418E-003
+   7.7017746612232938E-003
  Probability to to find electron on the left side
-  0.50001787316011714     
+  0.49008602507245969     
  Probability to to find electron on the first quarter
-  0.25870874965539331     
+  0.25116508933477372     
   
-        <x> for level           3  is   0.50000266058432319     
-       <x2> for level           3  is   0.32770192652861430     
- <x2>-<x>^2 for level           3  is    7.7699265937212381E-002
-         SD for level           3  is   0.27874588057442640     
+        <x> for level           3  is   0.50244576839911781     
+       <x2> for level           3  is   0.33305176548516452     
+ <x2>-<x>^2 for level           3  is    8.0600015302984607E-002
+         SD for level           3  is   0.28390141828279869     
  Probability to to find electron between x+sigma and x-sigma
-  0.46852535146238300     
+  0.46622538156136190     
  Probability to to find electron between 0.45 and 0.55
-  0.19306153279951313     
+  0.18025859749572873     
  Probability to to find electron on the left side
-  0.51245865128437396     
+  0.50707083214008308     
  Probability to to find electron on the first quarter
-  0.30488541830484939     
+  0.31303375234813141     
   
-        <x> for level           4  is   0.49754373088063891     
-       <x2> for level           4  is   0.32770554995026580     
- <x2>-<x>^2 for level           4  is    8.0155785811640151E-002
-         SD for level           4  is   0.28311797154479640     
+        <x> for level           4  is   0.50182365761619319     
+       <x2> for level           4  is   0.33197943590517243     
+ <x2>-<x>^2 for level           4  is    8.0152452561878140E-002
+         SD for level           4  is   0.28311208480366595     
  Probability to to find electron between x+sigma and x-sigma
-  0.50846542900479730     
+  0.50927591249341442     
  Probability to to find electron between 0.45 and 0.55
-   2.8667313338060298E-002
+   2.8039128603411106E-002
  Probability to to find electron on the left side
-  0.50007107479011814     
+  0.50003128218833182     
  Probability to to find electron on the first quarter
-  0.25000306844602743     
+  0.24510009272395336     
   
