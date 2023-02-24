@@ -4,13 +4,13 @@ set title 'Normalised wavefunctions for first three energy levels'
 set ylabel 'f(x)'
 set xlabel 'x'
 set key outside
-plot for [i=0:2] 'sh_n.dat' every :::i::i t 'n= '.(i+1) pt 7 ps 1.5 
+plot for [i=0:3] 'sh_n.dat' every :::i::i t 'n= '.(i+1) pt 7 ps 1.5 
 
 
 set title 'Probability density for first three energy levels'
 set output 'sh_n2.png'
 set ylabel 'f^2(x)'
-plot for [i=0:2] 'sh_n2.dat' every :::i::i t 'n='.(i+1) pt 7 ps 2
+plot for [i=0:3] 'sh_n2.dat' every :::i::i t 'n='.(i+1) pt 7 ps 2
 #set title '<++>'
 #set xrange [:]
 #set yrange [:]
