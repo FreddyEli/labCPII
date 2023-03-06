@@ -1,11 +1,17 @@
 set term pngcairo size 1280, 960 font "Arial,20"
+set title 'Function'
 set output 'libro.png'
+#set title '<++>'
+set xlabel 'x'
+set ylabel 'y'
 splot 'libro.dat' 
-set output 'libro_grad.png'
+set title 'Vector field {/:Bold E}'
+#set xlabel '<++>'
+#set ylabel '<++>'
+set output 'libro_grad.png' 
 set size 1
-set xrange [-2:2]
-set yrange [-2:2]
-plot 'libro_grad.dat' using 1:2:3:4 with vectors head filled lt 2
+set key outside
+plot 'libro_grad.dat' using 1:2:(0.2*$3):(0.2*$4) with vectors head filled lt 2 lw 0.5 t "{/:Bold E}"
 #set contour
 #set dgrid3d
 #w l palette
@@ -21,6 +27,4 @@ plot 'libro_grad.dat' using 1:2:3:4 with vectors head filled lt 2
 #set ylabel '<++>'
 #set xrange [:]
 #set yrange [:]
-#set key outside
-#set key right
 # '<++>' u (1:(3) w l lc "gray30" notitle, \

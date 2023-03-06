@@ -1,8 +1,8 @@
 program main
         use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
         implicit none
-        real(dp), parameter::a=-1 , b=1 , c=-1 , d=1
-        integer, parameter::m=101 , n=101. !both >=3
+        real(dp), parameter::a=-1D0 , b=1D0 , c=-1. , d=1.
+        integer, parameter::m=100 , n=100. !both >=3 and 2k
         real(dp), parameter::h=(b-a)/n , k=(d-c)/m 
         real(dp), parameter::lam=h*h/(k*k) , mu=2*(1+lam) 
         real(dp), parameter::tol=1D-10 , it=100009
@@ -11,6 +11,7 @@ program main
         !real(dp):: w(n-1, m-1), grad(n-1, m-1, 2)
         real(dp):: w(0:n, 0:m), grad(0:n, 0:m, 2)
         integer:: i, j, l
+open(99,file="libro.fuente")
 open(100,file="libro.dat")
 open(101,file="libro_grad.dat")
         do i= 0, n
@@ -19,18 +20,18 @@ x(i)=a+i*h
         do i= 0, m
 y(i)=c+i*k
         enddo
-w=0
+w=0D0
 do i=0, n
 w(i,0)= g(x(i),y(0))
 w(i,m)= g(x(i),y(m))
 enddo
 do i=0, m
-w(0,i)= g(x(0),y(0))
-w(n,i)= g(x(n),y(0))
+w(0,i)= g(x(0),y(i))
+w(n,i)= g(x(n),y(i))
 enddo
 l=1
 do while( l < it )
-z=(-h*h*f(h,k,x(1),y(m-1))+g(a,y(m-1))+lam*g(x(1),d)+lam*w(1,m-2)+w(2,m-1))/mu
+z=( -h*h*f(h,k,x(1),y(m-1))+g(a,y(m-1))+lam*g(x(1),d)+lam*w(1,m-2)+w(2,m-1) )/mu
 nor=abs(z-w(1,m-1))
 w(1,m-1)=z
 
@@ -48,7 +49,7 @@ if ( abs(w(n-1,m-1)-z)>nor ) then
 endif
 w(n-1,m-1)=z
 
-        do j= m-2,2,-1
+        do j= 2, m-2
         z=(-h*h*f(h,k,x(1),y(j))+g(a,y(j))+lam*w(1,j+1)+lam*w(1,j-1)+w(2,j))/mu
         if ( abs(w(1,j)-z)>nor ) then
                 nor=abs(w(1,j)-z)
@@ -70,6 +71,7 @@ w(n-1,m-1)=z
         w(n-1,j)=z
         enddo
 
+!14
 z=(-h*h*f(h,k,x(1),y(1))+g(a,y(1))+lam*g(x(1),c)+lam*w(1,2)+w(2,1))/mu
 if ( abs(w(1,1)-z)>nor ) then
 nor=abs(z-w(1,1))
@@ -91,7 +93,7 @@ endif
 w(n-1,1)=z
 
 !Paso 17
-if ( nor<tol ) then
+if ( nor<=tol ) then
         do i=0,n
         do j=0,m
                 write(100,*)  x(i), y(j), w(i,j)
@@ -102,7 +104,6 @@ endif
 
 l=l+1
 enddo
-
 print*, "Maximum number of iterations exceeded"
 10 continue 
 close(100)
@@ -110,19 +111,22 @@ close(100)
 call gradiente(w,h,k,grad)
 do i=0,n
 do j=0,m
-write(101,*)  x(i), y(j), x(i)+ grad(i,j,1),  y(j)+ grad(i,j,2)
+write(101,*)  x(i), y(j), x(i)+grad(i,j,1), y(j)+grad(i,j,2)
+write(99,*)  x(i), y(j), f(h,k,x(i),y(j)), g(x(i),y(j)) 
 enddo
 enddo
-
-close(100)
+close(99)
+close(101)
 contains
 
         !fuente
 real(dp) function f(h,k,x,y) result(r)
   implicit none
   real(dp), intent(in) ::h,k,x,y
-  if (abs(x-0D0)<=h .and. abs(y-0D0)<=k) then 
-          r=100.
+  if (abs(x-0.0D0)<=h .and. abs(y-0.0D0)<=k) then         
+          r=-1D0
+  else
+ r=0D0
  endif
 end function f
 
