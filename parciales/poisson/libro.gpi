@@ -1,8 +1,14 @@
 set term pngcairo size 1280, 960 font "Arial,20"
 set output 'libro.png'
-set contour
-set dgrid3d
-splot 'libro.dat' w l palette
+splot 'libro.dat' 
+set output 'libro_grad.png'
+set size 1
+set xrange [-2:2]
+set yrange [-2:2]
+plot 'libro_grad.dat' using 1:2:3:4 with vectors head filled lt 2
+#set contour
+#set dgrid3d
+#w l palette
 #set hidden3d
 #set xyplane at 0
 ##set urange [-3.0 : 3.0]
