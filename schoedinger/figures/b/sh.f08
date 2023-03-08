@@ -3,7 +3,7 @@ program main
   implicit none
   real(dp), parameter::pi=3.14159265
   integer,parameter :: n=400, niveles=4
-  real(dp),parameter :: x0=0, xf=1, fx0=1, fxf=1
+  real(dp),parameter :: x0=0, xf=1, fx0=100, fxf=100
   integer::i,j
   real(dp)::x,h,a(n),b(n),c(n),d(n),l(n),u(n),z(n),w(0:n+1),int_y
   real(dp)::fs(0:n+1,0:niveles),ort(niveles,niveles),dummy,dummy2,sigma
@@ -58,6 +58,9 @@ enddo
 
 do i = n-1,1,-1
         w(i)=z(i)-u(i)*w(i+1)
+enddo
+do i = 0,n+1
+!w(i)=w(i)-fx0
 enddo
 
 do i=0,n+1
@@ -121,7 +124,7 @@ open(104,file="sh.err")
 fo(:,0)=fs(:,0)
 do i=1,niveles
 
-!!    if (i==1) then
+!    if (i==1) then
 !fo(:,i)=sin(i*pi*fs(:,0))
   if (MOD(i,2)==0) then
 fo(:,i)=sin(i*pi*fs(:,0))
@@ -157,7 +160,7 @@ do i=1,niveles
         write(104,*) "         Average error",i," is ", dummy
         dummy=sum(abs(fo(:,i)))/size(fo(:,i))
         write(104,*) "Average absolute error",i," is ", dummy
-        write(104,*) "             RMS error",i," is ", dummy2
+        write(104,*) "             RMS error",i," is ", dummy
         write(104,*) " "
 enddo
 close(104)

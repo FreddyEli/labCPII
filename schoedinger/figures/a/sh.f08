@@ -53,12 +53,13 @@ l(n)=a(n)-c(n)*u(n-1)
 z(n)=(d(n)-c(n)*z(n-1))/l(n)
 
 do i = 1,n
-        w(i)=z(i)-fx0
+        w(i)=z(i)
 enddo
 
 do i = n-1,1,-1
         w(i)=z(i)-u(i)*w(i+1)
 enddo
+w=w-fx0
 
 do i=0,n+1
         if (j==1) then
@@ -121,9 +122,9 @@ open(104,file="sh.err")
 fo(:,0)=fs(:,0)
 do i=1,niveles
 
-!!    if (i==1) then
-!fo(:,i)=sin(i*pi*fs(:,0))
-  if (MOD(i,2)==0) then
+    if (i==1) then
+fo(:,i)=sin(i*pi*fs(:,0))
+ else if (MOD(i,2)==0) then
 fo(:,i)=sin(i*pi*fs(:,0))
 else
 fo(:,i)=-sin(i*pi*fs(:,0))
@@ -157,7 +158,7 @@ do i=1,niveles
         write(104,*) "         Average error",i," is ", dummy
         dummy=sum(abs(fo(:,i)))/size(fo(:,i))
         write(104,*) "Average absolute error",i," is ", dummy
-        write(104,*) "             RMS error",i," is ", dummy2
+        write(104,*) "             RMS error",i," is ", dummy
         write(104,*) " "
 enddo
 close(104)

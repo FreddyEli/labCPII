@@ -1,0 +1,19 @@
+set term pngcairo size 1400, 1000 font "Arial,20"
+set output 'sh_n.png'
+set title 'Normalised wavefunctions for first three energy levels'
+set ylabel 'f(x)'
+set xlabel 'x'
+set key outside
+plot for [i=0:2] 'sh_n.dat' every :::i::i t 'n= '.(i+1) pt 7 ps 1.5 
+
+
+set title 'Probability density for first three energy levels'
+set output 'sh_n2.png'
+set ylabel 'f^2(x)'
+plot for [i=0:2] 'sh_n2.dat' every :::i::i t 'n='.(i+1) pt 7 ps 2
+#set title '<++>'
+#set xrange [:]
+#set yrange [:]
+#set key outside
+#set key right
+# '<++>' u (1:(3) w l lc "gray30" notitle, \

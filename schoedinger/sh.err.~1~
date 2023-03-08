@@ -42,7 +42,7 @@
  <x2>-<x>^2 theorethical for level           4  is    8.0164344773093643E-002
          SD theorethical for level           4  is   0.28313308668026355     
  Theorethical probability to to find electron between x+sigma and x-sigma
-  0.50845387154859134     
+  0.50845387154859123     
  Theorethical probability to to find electron between 0.45 and 0.55
    2.8066827099175837E-002
  Theorethical probability to to find electron on the left side
@@ -51,19 +51,19 @@
   0.25000313355922726     
   
   
-          Average error           1  is   -1.1628253721119619E-006
- Average absolute error           1  is    2.1496043314699524E-006
-              RMS error           1  is    2.6606442260507082E-006
+          Average error           1  is    2.1242435337964194E-003
+ Average absolute error           1  is    7.3075005073617669E-003
+              RMS error           1  is    7.3075005073617669E-003
   
-          Average error           2  is   -5.4999875606040818E-005
- Average absolute error           2  is    1.4096012855178239E-002
-              RMS error           2  is    1.5653900580019513E-002
+          Average error           2  is    1.1060789097174072E-002
+ Average absolute error           2  is    1.1063325539021686E-002
+              RMS error           2  is    1.1063325539021686E-002
   
-          Average error           3  is   -3.8337061638439301E-006
- Average absolute error           3  is    5.0606800689822248E-005
-              RMS error           3  is    6.4048825822571778E-005
+          Average error           3  is    2.9586343477742687E-002
+ Average absolute error           3  is    3.0327020841482793E-002
+              RMS error           3  is    3.0327020841482793E-002
   
-          Average error           4  is   -1.0926120564378767E-004
- Average absolute error           4  is    2.8007766729110737E-002
-              RMS error           4  is    3.1103291008717296E-002
+          Average error           4  is    1.1032901601642669E-002
+ Average absolute error           4  is    1.1078525941639059E-002
+              RMS error           4  is    1.1078525941639059E-002
   
