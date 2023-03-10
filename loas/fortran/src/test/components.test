@@ -1,0 +1,8 @@
+! Data struct
+    ! [A-Z] component type, nodes it connects to , dataspecific for component 
+R 0 1 10
+! Rsistor 10 ohms
+L 1 2 100 
+! Inductor 100 Henrri
+C 2 3 50
+! CApacitor

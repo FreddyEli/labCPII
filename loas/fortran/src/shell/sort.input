@@ -1,0 +1,9 @@
+#!/bin/bash
+grep -v "!" ../components > ../input/components.input 
+wc -l ../input/components.input > ../input/wc.input
+
+for l in 'R' 'L' 'C' 'V' 'I'; do
+grep  "^${l}" ../input/components.input | sed "s/^${l} //"> ../input/components.${l,,}
+wc -l ../input/components.${l,,}> ../input/wc.${l,,}
+done
+
