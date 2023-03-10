@@ -1,1 +1,1 @@
-1 ../input/components.r
+1

@@ -1,1 +1,1 @@
-0 ../input/components.l
+0

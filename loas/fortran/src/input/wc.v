@@ -1,1 +1,1 @@
-1 ../input/components.v
+1
