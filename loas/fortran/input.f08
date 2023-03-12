@@ -1,7 +1,7 @@
 program input
   use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
   implicit none
-  integer:: numberOfComponents, i, nr, nl, nc
+  integer:: numberOfComponents, i, nr, nl, nc, nv, ni
   character, allocatable:: letter(:)
   character (len=200) :: line
   integer :: dat1, RetCode
@@ -34,28 +34,24 @@ case ("L")
 nl=nl+1
 case ("C")
 nc=nc+1
+case ("V")
+nr=nr+1
+case ("I")
+nl=nl+1
 end select
 i=i+1
 end do
 
-print*, "       R      C       L"
-print*, nr,nc,nl
 101 CONTINUE
 close(1)
+print*, "       R      C       L,    V,          I"
+print*, nr,nc,nl, nv, ni
+
+if (ni==0 .and. R == 1) then
+call(SYSTEM(./shell/sort.components))        
+end if
 
 
-
-
-!if () print*, "no"
- !     print*, "read error"
- !     exit read_loop
- !   end if
-!    read (line, *) dat1
-!end do read_loop
-!enddo
-
-!numberOfComponents=0
-!print*, numberOfComponents
 end program
 
 
