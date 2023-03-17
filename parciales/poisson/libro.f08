@@ -112,7 +112,8 @@ call gradiente(w,h,k,grad)
 do i=0,n
 do j=0,m
 write(101,*)  x(i), y(j), x(i)+grad(i,j,1), y(j)+grad(i,j,2)
-write(99,*)  x(i), y(j), f(h,k,x(i),y(j)), g(x(i),y(j)) 
+write(99,*)  x(i), y(j), f(h,k,x(i),y(j)), g(x(i),y(j))
+
 enddo
 enddo
 close(99)
