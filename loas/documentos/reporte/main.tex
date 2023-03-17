@@ -1,0 +1,318 @@
+\documentclass[12pt,twoside]{extarticle}
+\input{Pre}
+\usepackage{xcolor}
+\usepackage{physics}
+\usepackage{cellspace}
+\usepackage{paracol}% support floats
+%------------------------------
+% PORTADA
+%------------------------------
+\title{\bfseries\huge \sffamily Análisis computacional de circuitos elecrticos}
+\author{\normalfont Freddy Eli Campillo Dorantes}
+\date{\itshape\LARGE\bfseries}
+\newtheorem{problem}{Problem}
+\newcommand{\solution}{{\normalfont\bfseries Solution}}
+
+
+\begin{document}
+\begin{titlepage}
+\centering
+{\huge\scshape Univesidad de las Américas Puebla \par}
+\vspace{0.5cm}
+{\Large Departamento de Actuaría, Física y Matemáticas \par}
+\vspace{2cm}
+{\includegraphics[width=0.4\textwidth]{figures/EscudoUDLAP.jpg}\par}
+\vspace{2cm}
+{\sffamily\Huge\bfseries Análisis computacional de circuitos elecrticos\par}
+\vspace{1cm}
+    {\large\itshape Laboratorio de física computacional II\par}
+\vfill
+{\textbf{Autor:}\\
+ Freddy Eli Campillo Dorantes\par}
+\end{titlepage}
+\tableofcontents
+\maketitle
+
+\begin{tcolorbox}[colback=black!10!white,colframe=black,enhanced,sharp corners,boxrule=0.6pt]
+\begin{abstract}
+Se analizaron las soluciones de los primeros niveles energéticos de un electrón en un pozo de potencial infinito, de manera numérica, utilizando el método de diferencias finitas para ecuaciones lineales, dadas la energías de cada caso. Después, se realizó un análisis estadístico de los datos para calcular las propiedades de la distribución electrónica mediante parámetros como la media y la distribución standar.
+Se encontró que las distribuciones son simétricas, y que la desviación standar está correlacionada con el nivel energético. Asímismo se demostró de manera numérica que el conjunto solución es ortonormal.
+ \noindent\textit{ Palabras clave:} Circuitos eléctricos, métodos numéricos.
+ \end{abstract}
+\end{tcolorbox}
+\setlength{\parskip}{0.4\baselineskip}\newpage
+%----------------------------
+% --- Problem Setting
+%----------------------------
+\section{Objetivos}
+\subsection{Generales}
+\begin{itemize}\setlength\itemsep{0.25em}
+    \item Enzamblaje de cuatro circuitos RLC en combinaciones diferentes, compuestos de los mismos componentes.
+    \item Medición de la evollución de la corriente y el volrage con respecto al tiempo en puntos clave de las configuraciónes.
+    \item Simulación computacional de los cuatro circuitos antes mencionados. Obtener numéricamente los datos de las mediciones hechas y comparar con los datos experimentales.
+\end{itemize}
+
+\subsection{Específicos}
+\begin{itemize}\setlength\itemsep{0.25em}
+    \item Transformar los circuitos experimentales en forma matricial. Resolver dichas matrices con métodos numéricos del álgebra lineal.
+    \item  La solución de dichas matrices resultará en un conjunto de ecuaciones diferenciales cuya solución serán el voltaje o la corriente.
+    \item Análisis de los datos para encontras la frecuancia de oscilación y el factor de amortiguamiento.
+    \item  Comparación de factores numéricos con experimentales y analíticos.
+        \begin{itemize}\setlength\itemsep{0.25em}
+            \item Voltje y corriente
+            \item Frecuencia natural
+            \item Factor de amortiguamiento
+        \end{itemize}
+
+\end{itemize}
+
+\section{Planteamiento del problema}
+\subsection{Circuitos RLC}
+\noindent 
+\begin{figure}
+\begin{tabular}{cc}
+  \includegraphics[height=0.34\textwidth]{figures/RLC_series.png} &   \includegraphics[height=0.30\textwidth]{figures/RLC_parallel.png} \\
+(a) Series & (b) Parallerl \\[6pt]
+  \centering \includegraphics[height=0.35\textwidth]{figures/RL_series_C_parallel.png} &   \includegraphics[height=0.35\textwidth]{figures/L_series_RC_parallel.png} \\
+(c) third & (d) fourth \\[6pt]
+\end{tabular}
+\caption{caption}
+\end{figure}
+
+
+
+\subsection{Pozo de potencial infinito}
+\noindent Para la representación usual de este problema se utiliza la en dónde se ubica una partícula de masa m en un espacio limitado por dos barreras de potencial alejadas, una de la otra, con una distancia constante L. Además, se afirma que en el espacio considerado, la partícula de masa m no está sujeta a ninguna fuerza. Esto obliga a una partícula vivir en un intervalo, elegido convencionalmente para ser $x\in [0, a]$. Teniendo en los extremos 0 y a que impiden que la partícula vaya de $x>a$ y $x<0$. El potencial se define de la siguiente manera:.
+Este diagrama se denomina escalera cuántica. El nivel de energía más bajo se llama estado fundamental, mientras que el resto se denomina estados excitados.
+
+\subsection{Dependencia del tiempo}
+Si una partícula en una caja comienza en una de las funciones propias de energía $\Psi_n(x)$, se multiplica $\Psi_n$ por el factor de ondulación habitual dependiente del tiempo para obtener:
+\begin{equation}
+    \Psi(x, t)=\Psi_n(x)e^{-iE_nt/\hbar}
+\end{equation}
+Esto quiere decir que la magnitud de la función de onda permanece sin cambios en cada x, mientras que la fase estará oscilando en el sentido de las agujas del reloj, a una velocidad proporcional a la energía $E_n$
+\subsection{Ortogonalidad}
+Las autofunciones de energía son ortogonales, en el sentido de que:
+\begin{equation}
+    \int_{0}^{a} \Psi_m(x)\Psi_n(x)dx=0 \quad m\neq n \label{orthogonal}
+\end{equation}
+Esta integral se puede ver como un producto punto de dimensión infinita, multiplicando los componentes de $\Psi_m$ y $\Psi_n$ con cada x, para después sumar, para esto, definimos el producto interno de dos funciones de onda undimensionale como:
+\begin{equation}
+    \langle \Psi_a, \Psi_b \rangle=\int_{-\infty}^{\infty} \Psi_a*(x)\Psi_b(x)dx
+\end{equation}
+Donde se requiere la conjugación compleja para garantizar el producto interno de cualquier función de onda normalizada, combinando la ecuación \ref{orthogonal} con la condición de normalización, obtenemos:
+\begin{equation}
+    \int_{0}^{a} \Psi_m(x)\Psi_n(x)dx=\delta_{mn} \label{normalization}
+\end{equation}
+Donde la $\delta_{mn}$ es una abreviatura de la delta de Kronecker, definido como:
+\begin{equation}
+    \delta_{mn}=\begin{cases}
+1, & \text{if}\quad m=n, \\ 0 & \text{if}\quad m\neq n\end{cases}
+\end{equation}
+De manera que se puede expresar de forma verbal la ecuación \ref{normalization} como que las funciones propias de la energía son ortonormales.
+\subsection{Probabilidad}
+Si una partícula en un pozo de potencial infinito comienza con una función propia de energía y se toma la medida de sus posiciones, se podrá saber las probabilidades de los resultados.
+La densidad de probabilidad de posición se distribuye en todo el ancho del pozo, y varía sinusoidalmente entre 0 en los nodos y $2/a$ en los antinodas.
+Por otro lado, si la partícula comienza en una función de onda arbitraria, si la función es una energía propia de $\Psi_n$, entonces, se obtendra el valor de $E_n$.
+Si la función de onda es una mezcla de dos funciones propias de energía, tal como:
+\begin{equation}
+    \Psi(x)=c_1\Psi_1(x)+c_2\Psi_2(x)
+\end{equation}
+Entonces, se podran obtener $E_1$ o $E_2$ como resultado, con probabilidades que dependeran de los coeficientes $c_1$ y $c_2$. Es importante mencionar que las probabilidades no pueden ser igual a los coeficientes, ya que estos pueden ser negativos o incluso complejos; las probabilidades son iguales al cuadrado de los módulos de estos coeficientes, $|c_1|^2$ y $|c_2|^2$, respectivamente. Para ver por qué, primero se comprobará la normalización de $\Psi(x)$:
+\begin{equation}
+    1=\int_{0}^{a}|\Psi(x)|^2dx=\int_{0}^{a}[|c_1|^2\Psi_{1}^{2}+|c_2|^2\Psi_{2}^{2}+(c_1^*c_2+c_2^*c_1)\Psi_1\Psi_2]dx
+\end{equation}
+integrando los tres términos por separado, encontramos que los dos primeros dan como resultado $|c_1|^2$ y $|c_2|^2$, ya que $\Psi_1$ y $\Psi_2$ están normalizados, mientras que el tercer término integra a cero, ya que $\Psi_1$ y $\Psi_2$ son ortogonales. Por lo tanto, los coeficientes al cuadrado obedecen la relación $|c_1|^2+|c_2|^2=1$, tal como se espera para las probabilidades.
+Por lo tanto, según el resultado que se obtienen con el truco de Fourier que menciona el Griffiths, la probabilidad será:
+\begin{equation}
+    (\text{Probability of}\quad E_n)=|c_n|^2=|\int_{0}^{a}\Psi_n(x)\Psi(x)dx|^2
+\end{equation}
+Además, la normalización de $\Psi(x)$ implica que la suma de todas estas probabilidades es igual a 1:
+\begin{equation}
+    \sum_{n=1}^{\infty}|c_n|^2=1
+\end{equation}
+
+\subsection{Unidad atómicas}
+Las unidades atómicas de Hartree son un sistema de unidades naturales de medición que es especialmente conveniente para los cálculos de física atómica y química computacional. Llevan el nombre del físico Douglas Hartree. Por definición, las siguientes cuatro constantes físicas fundamentales pueden expresarse cada una como el valor numérico 1, multiplicado por una unidad coherente de este sistema:
+
+\begin{itemize}
+    \item  Constante de Planck reducida: $\hbar$ , también conocida como la unidad atómica de acción.
+\item Carga elemental: $e$, también conocida como la unidad atómica de carga.
+\item Radio Bohr: $a_{0}$ también conocida como la unidad atómica de longitud.
+\item Mass electrónica: $m_{\text{e}}$, también conocida como la unidad atómica de masa
+\end{itemize}
+
+Las unidades atómicas a menudo se abrevian "a.u." o "au", que no deben confundirse con las mismas abreviaturas utilizadas también para unidades astronómicas, unidades arbitrarias y unidades de absorbancia en otros contextos.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Numerical methodology
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Metodología Numérica}
+\subsection{Método de diferencias finitas para problemas lineales}
+
+En el método de diferencias finitas, se utilizan fórmulas de diferencia finita en una malla de puntos igualmente espaciados para  aproximar las derivadas de la ecuación diferencial. En este método, el tamaño de paso h no puede ser muy pequeño ya que existe una estabilidad general de las aproximaciones de la derivada. La forma de la ecuación diferencial de segundo orden con valor a la frontera se encuentra en la ecuación 16.
+\begin{equation}
+    y''=p(x)y'+q(x)y+r(x),\hspace{10mm}a\leq x\leq b,\hspace{10mm}y(a)=\alpha, y(b)=\beta
+\end{equation}
+ Para aproximar por medio de cociente de diferencia a $y'$ y $y''$, se debe seleccionar un entero N$\leq$0 y dividimos el intervalo de $[a,b]$ en $(N+1)$ secciones, lo que nos da un tamaño de paso de $h=b-a/N+1$, y los extremos de las secciones se encuentran en los puntos de de malla $x_i=a+ih$ para $i=0,1,...,N+1$.
+
+ Por lo tanto, la ecuación diferencial a aproximar de manera discreta es:
+ \begin{equation}
+     y''(x_i) = p(x_i)y'(x_i) + q(x_i)y(x_i)+r(x_i)
+ \end{equation}
+ se expande en el polinomio de Taylor hasta el tercer término alrededor de $x_i$ y evaluado en $x_{i+1}$, tenemos que:
+ \begin{equation*}
+     y(x_{i+1})= y(x_i) + hy'(x_i)+\frac{h^2}{2}y''(x_i)+\frac{h^3}{6}y'''(x_i) 
+ \end{equation*}
+ y, al evaluar en $x_{i-1},$ tenemos que:
+  \begin{equation*}
+     y(x_{i-1})= y(x_i) - hy'(x_i)+\frac{h^2}{2}y''(x_i)-\frac{h^3}{6}y'''(x_i) 
+ \end{equation*}
+Cuando se suman estas ecuaciones y se resuelve para $y''(x_i)$, tenemos que:
+\begin{equation}
+    y''(x_i)=\frac{1}{h^2}\left[y(x_{i+1}-2y(x_i)+y(x_{i-1}))\right]
+\end{equation}
+ La cual recibe el nombre de \textbf{fórmula de diferencia centrada}.
+ Por el otro lado, la fórmula de diferencia centrada para $y'(x_i)$ es:
+ \begin{equation}
+     y'(x_i)=\frac{1}{2h}\left[y(x_{i+1}-x_{i-1})\right]
+ \end{equation}
+ Utilizando estas dos últimas ecuaciones y reemplazándolas en la ecuación 17, obtenemos la siguiente expresión:
+
+\begin{equation}
+    \frac{y(x_{i+1})-2y(x_i)+y(x_{i-1}))}{h^2}=p(x_i)\left[\frac{y(x_{i+1})-y(x_{i-1})}{2h}\right] + q(x_i)y(x_i)+r(x_i)
+\end{equation}
+
+De esta manera, se tiene un método de diferencias finitas que nos permite definir un sistema de ecuaciones lineales con $w_0=\alpha$ y $w_{N+1}=\beta$, sustituyendo la expresión $w_i$ por la evaluación de la función $y(x_i)$, se obtiene:
+
+\begin{equation}
+    \frac{-w_{i+1}+2w_i-w_{i-1}}{h^2}+p(x_i)\left[\frac{w_{i+1}-w_{i-1}}{2h}\right] + q(x_i)w_i=-r(x_i)
+\end{equation}
+Para cada $i=1,2,...N.$ Al ordenar términos, se obtiene la siguiente expresión:
+\begin{equation*}
+    -\left(1+\frac{h}{2}p(x_i)\right)w_{i-1}+(2+h^2q(x_i))w_i-\left(1-\frac{h}{2}p(x_i)\right)w_{i+1}=-h^2r(x_i),
+\end{equation*}
+Donde podemos observar que los coeficientes de cada $w_i$, $w_{i-1}$ y $w_{i+1}$ se pueden representar en una matriz tridiagonal de tamaño $N\times N$. De esta manera, se representa el sistema como:
+\begin{equation}
+    \textbf{Aw} = \textbf{b}
+\end{equation}
+Donde $\textbf{w}=\left[w_1,w_2,...,w_N\right]$;
+
+\begin{equation*}
+\textbf{b}=
+\begin{pmatrix}
+    -h^2r(x_1)+\left(1+\frac{h}{2}p(x_1)\right)w_0 \\
+    -h^2r(x_2) \\
+    \vdots \\
+    -h^2r(x_{N-1}) \\
+    -h^2r(x_N)+\left(1+\frac{h}{2}p(x_N)\right)w_{N+1} \\
+\end{pmatrix}
+\end{equation*}
+y,
+
+\begin{equation*}
+\textbf{A}=
+\begin{pmatrix}
+    2+h^2q(x_1) & -1+\frac{h}{2}p(x_1) & 0 & \hdots & 0\\
+    -1-\frac{h}{2}p(x_2) & 2+h^2q(x_2) & -1+\frac{h}{2}p(x_1) & \ddots & \vdots  \\
+    0 & \ddots & \ddots & \ddots & 0 \\
+    \vdots & \ddots & \ddots & \ddots & -1+\frac{h}{2}p(x_{N-1}) \\
+    0 & \hdots & 0 & -1-\frac{h}{2}p(x_N) & 2+h^2q(x_N) \\
+\end{pmatrix}
+\end{equation*}
+
+
+Es así que se puede desarrollar un algoritmo que implemente la solución de una matriz tridiagonal, por ejemplo, la factorización LU, la cual se puede implementar dentro del algoritmo del método. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Analysis of numerical results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Análisis de resultados numéricos}
+Sin embargo, para su análisis es necesario también representar la densidad de probabilidad, es decir el cuadrado de la función de onda, pues esta es un mejor indicador de la probabilidad de encontrar a la partícula en un valor de la posición determinado. Por simple observación, podemos encontrar que en las posiciones de los nodos encontrados de la función de onda existirá la menor probabilidad de encontrar a la partícula. Y, por el contrario, en las posiciones de los antinodos, encontraremos centrados picos, que indican que en estos lugares tenderemos la mayor probabilidad de avistamiento.
+
+Ahondado en lo discutido en el punto anterior, la función de densidad de probabilidad también nos permite calcular cantidades estadísticamente no ables, por medio de unas simples integrales: los primeros dos momentos de la distribución, $\expval{x}$ y $\expval{x^2}$; así como la desviación estándar ($\sigma$). Estos se presentan en la tabla \ref{tab:statexp}, de donde podemos concluir que si bien todas las distribuciones cuentan con medias centradas en el pozo y son simétricas, difieren en que hay una clara tendencia a la dispersión, correlacionada con el nivel energético, como indica el aumento de la desviación standar. Esto ya lo esperábamos pues con el nivel energético aparecen cada vez más picos de probabilidad que se alejan de la media.
+
+\begin{table}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{cccc}
+        \toprule[3pt]
+Nivel energético & Posición esperada ($a_0$) & $\expval{x^2}$ ($a^2_0$) & Desviación estándar ($a_0$) \\
+        \midrule[2pt]
+1 & 0.500 & $0.283$ & $0.181$ \\
+2 & 0.498 & 0.318 & 0.266    \\
+3 & 0.500 & 0.328 & 0.279    \\
+4 & 0.498 & 0.328 & 0.283    \\
+        \bottomrule[3pt]
+        \end{tabular}}
+    \caption{Parámetros estadísticos importantes de la función de densidad de probabilidad.}
+    \label{tab:statexp}
+\end{table}
+
+De manera similar, si restringimos los rangos de integración, es posible encontrar la probabilidad de encontrar al electrón en cierto intervalo del pozo. Cuatro rangos de interés fueron probados y documentados en la tabla \ref{tab:prop}. Primero encontramos que como anteriormente se dijo que la distribución es simétrica con respecto al centro del pozo, la probabilidad de que se encuentre en la primera o segunda mitad de este es la misma. Además, confirmamos el análisis del aumento de dispersión con el nivel energético, pues la probabilidad de encontrar a la partícula en el primer cuarto del pozo aumenta también. Después se investigo la probabilidad de encontrar al electrón en el centro; como habíamos dicho antes esta va alternando de valor con el nivel, pues para los niveles pares se cuenta con un antinodo en el centro del pozo, lo cual hace casi imposible que se encuentre en tal posición. Por último, nos interesó conocer la probabilidad de encontrar al electrón en el centro del pozo y con un radio marcado por la desviación estándar de cada distribución. Encontramos que el mayor valor se encontró en el primer nivel, con una similitud al parámetro de la distribución estándar. Para mayores niveles eso se disminuye ligeramente.
+
+\begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{ccccc}
+        \toprule[3pt]
+       \multicolumn{1}{c}{\multirow{2}{*}{Nivel}} & \multicolumn{4}{c}{Probabilidad de encontrar al electrón en:}\\ 
+            & Primera mitad & Primer cuarto & [0.45-0.55] & [$(\expval{x}-\sigma)- (\expval{x}+\sigma)$] \\
+        \midrule[2pt]
+           1     & 0.512 & $9.273\times 10^{-2}$ & $0.208$ & $0.654$\\
+           2     & 0.500 & 0.259 & $7.696\times 10^{-3}$ & $0.567$\\
+           3     & 0.512 & 0.305 & $0.193$ & $0.469$\\
+           4     & 0.500 & 0.250 & $2.867\times 10^{-2}$ & $0.508$\\
+        \bottomrule[3pt]
+        \end{tabular}}
+    \caption{Probabilidad de encontrar a la partícula en cuatro rangos de interés. [0-0.5] $a_0$, [0-0.25] $a_0$, [0.45-0.55] $a_0$ y una bola con radio de la distribución standar centrada en la media.}
+    \label{tab:prop}
+\end{table}
+
+\subsection{Comparación con solución teórica}
+Finalmente, es indispensable comparar nuestra aproximación numérica con la solución analítica de las funciones de onda, para calcular su validez. En la tabla \ref{tab:error} mostramos tres valores del error calculados: el error medio, el error absoluto medio y la raíz del error cuadrático medio. Estos tres valores calculado indican que la aproximación hecha es muy precisa y confiable para el cálculo de las propiedades antes discutidas.
+
+\begin{table}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{cccc}
+        \toprule[3pt]
+Nivel energético & Error promedio &  Error absoluto promedio & Raíz del erro cuadrático medio\\
+        \midrule[2pt]
+        \bottomrule[3pt]
+        \end{tabular}}
+    \caption{Error del calculo experimental comparado con la solución teórica sinusoidal del problema.}
+    \label{tab:error}
+\end{table}
+
+\subsection{Ortogonalidad del conjunto solución}
+Además de las características individuales de las funciones, también nos interesan las cualidades del conjunto, por ejemplo si el conjunto de solución del problema es ortonormal. Recordemos que la normalidad se garantizó en el código, al calcular la integral del cuadrado de las funciones en la totalidad del pozo. Por ello, para el caso de la ortogonalidad, se decidió calcular la \textit{matriz de ortogonalidad} $\mathcal{O}$, cuyas entradas están conformadas por los productos punto de las funciones. Si el resultado de dichas integrales es una matriz que se asemeje a la identidad, entonces es posible afirmar que el conjunto es ortonormal, y esto es justamente lo encontrado en los resultados, eq. \ref{eq:ortm}.
+
+\begin{equation}\label{eq:ortm}\mathcal{O} =\begin{pmatrix}
+1.000               &  6.638\times 10^{-3} &  1.229\times 10^{-5} & 2.642\times 10^{-3}\\
+6.638\times 10^{-3} &  0.999               & -1.194\times 10^{-2} & 2.636\times 10^{-5}\\
+1.229\times 10^{-5} & -1.194\times 10^{-2} &  0.999               & 1.696\times 10^{-2}\\
+2.642\times 10^{-3} &  2.636\times 10^{-5} &  1.696\times 10^{-2} & 1.000\\
+\end{pmatrix}  \approx \mathcal{I} \end{equation} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Conclusions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusiones}
+\noindent Después del análisis de resultados concluimos que el método de diferencias finitas es un método válido y útil para describir el fenómeno de una partícula en el pozo de potencial infinito, pues de los datos se puede apreciar la extraordinaria similitud con la solución analítica. Sin embargo, también hay que reconocer que esta metodología resulta incompleta, pues requerimos del valor de la energía apriori al cálculo de cada función de onda. Por esta razón este método palidece a los utilizados anteriormente para resolver este mismo problema con condiciones iniciales, como el método del disparo.\cite{bobrow1983analisis}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\thispagestyle{empty}
+\printbibliography\addcontentsline{toc}{section}{References}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Appendix (code)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\thispagestyle{empty}
+\appendix
+\section{Appendix: Fortran Code}
+\input{code}
+\end{document}

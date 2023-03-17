@@ -1,0 +1,168 @@
+\usepackage[margin=1.2in,top=1.6in,bottom=1.6in]{geometry}
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{svg}
+\usepackage{listingsutf8}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{empheq}
+\usepackage[most]{tcolorbox}
+\usepackage{floatrow}
+\usepackage[style=numeric,sorting=none]{biblatex}
+% \usepackage[spanish,english]{babel}
+\usepackage[rightcaption]{sidecap}
+\usepackage[bottom]{footmisc}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}	
+% \newtheorem{problem}{Problem}[chapter]
+% \newtheorem{definition}{\sffamily Definition}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+\usepackage{esint}
+\usepackage[font=small,labelfont=bf,small,sf]{caption}
+\usepackage{titlesec}
+\usepackage{calc}
+\usepackage{fancyhdr}
+\usepackage{physics}
+\usepackage{hyperref}
+\usepackage{lettrine}
+% \usepackage{subfig}
+\usepackage[cal=cm,scr=boondoxo,bb=px]{mathalfa}
+\usepackage{tikz}\usetikzlibrary{shapes.misc}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\allowdisplaybreaks
+\renewcommand{\baselinestretch}{1.2}
+\addbibresource{References.bib}
+%-------------------------------
+%----------- COMANDOS
+%-------------------------------
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\sol}{\normalfont\textbf{Solution}}
+% \renewcommand{\dbar}{d\hspace*{-0.08em}\bar{}\hspace*{0.1em}}
+\newcommand{\dem}{\normalfont\bfseries Demostración}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\bracket}[1]{\left[]#1\right]}
+\renewcommand{\vector}[1]{\mathbf{#1}}
+\newcommand{\unit}[1]{\,\hat{\mathbf{#1}}}
+\renewcommand{\r}{\scalebox{0.8}{\rotatebox[origin=c]{335}{$\mathscr{n}$}}}
+\newcommand{\bfr}{\scalebox{0.8}{\rotatebox[origin=c]{335}{$\mathbscr{n}$}}}
+\newcommand{\ur}{\hat{\bfr}}
+\renewcommand{\qedsymbol}{{\color{black!90!white}$\blacksquare$}}
+%\newcommand{\eval}{\biggr\rvert}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\barL}{\overline{\L}}
+\renewcommand{\v}{\boldsymbol{v}}
+\renewcommand{\lstlistingname}{Code}
+%---------------------------------
+% OPCIONES 
+%---------------------------------
+\setlength\parindent{20pt}
+% \floatsetup[table]{capposition=beside,capbesideposition={right,bottom}}
+\arrayrulecolor{black!20!white}
+\setcounter{tocdepth}{2}
+\setlength\fboxsep{7pt}
+\setlength\fboxrule{0.8pt}
+\setlength{\headheight}{17pt}
+\setlength{\marginparwidth}{2in}
+\floatsetup[figure]{capposition=below}
+% \newtheorem{theorem}{\bfseries\sffamily Theorem}
+\newcounter{theorem}
+\newenvironment{theorem}{\stepcounter{theorem}\begin{tcolorbox}[colback=white,colframe=black,enhanced,breakable,sharp corners,boxrule=0.6pt]{\sffamily\textbf{Theorem \thetheorem.}}}{\end{tcolorbox}}
+\newcounter{definition}
+\newenvironment{definition}[1][]{\stepcounter{definition}\begin{tcolorbox}[colback=black!10!white,colframe=black,enhanced,breakable,sharp corners,boxrule=0.6pt]{\sffamily\textbf{Definition \thedefinition{\,#1}.}}}{\end{tcolorbox}}
+
+\renewcommand{\headrulewidth}{0pt}
+\let\arrow\rightarrow
+\tcbset{highlight math style={enhanced,
+  colframe=black,colback=white,arc=0pt,boxrule=0.5pt,sharp corners}}
+\newcommand*{\figref}[2][]{%
+  \hyperref[{#2}]{%
+    Figure~\ref*{#2}%
+    \ifx\\#1\\%
+    \else
+      \,#1%
+    \fi
+  }%
+}
+%---------------------------------
+% ENCABEZADO
+%---------------------------------
+\pagestyle{fancy}
+\fancyhead[CO]{\itshape\nouppercase\leftmark}
+\fancyhead[RE,RO]{}
+\fancyhead[LE,LO]{}
+\fancyhead[CE]{\itshape\nouppercase Normal Modes of Oscillation}
+\fancyhead[RO,LE]{\bfseries\itshape\thepage}
+% \fancyheadoffset[leh,roh]{2.2in}
+%---------------------------------
+% ------- SECTION DESIGN
+%---------------------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries}{{\sffamily\bfseries\thesection.}}{1ex}{}[{\color{black!20!white}\titlerule[3pt]}]
+\titleformat{\subsection}{\sffamily\large\bfseries}{\thesubsection.}{1ex}{}
+\titleformat{\subsubsection}{\sffamily\bfseries}{}{0ex}{}
+%---------------------------------
+% ----------- EXAMPLE
+%---------------------------------
+
+
+%---------------------------------
+%-------------- NOTE
+%---------------------------------
+
+%------------------------------
+% --------- CODE
+%------------------------------
+\newenvironment{cd}
+    {\begin{tcolorbox}[colframe=black!5!white,colback=black!5!white,enhanced,breakable,sharp corners,boxrule=0.6pt]\begin{itemize}\item[]\verbatimfont{\sffamily}}
+    {\end{itemize}\end{tcolorbox}}
+\newenvironment{code}
+    {\verbatimfont{\sffamily}\begin{itemize}\item[]}
+    {\end{itemize}}
+%---------------------------------
+%----- SIGNO DE SUMA CM
+%---------------------------------
+\DeclareSymbolFont{cmlargesymbols}{OMX}{cmex}{m}{n}
+\let\sumop\relax
+\DeclareMathSymbol{\sumop}{\mathop}{cmlargesymbols}{"50}
+%----------------------------
+% LISTING
+%----------------------------
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{black!10!white},   
+    commentstyle=\color{black!70!white}\sffamily,
+    keywordstyle=\color{black}\bfseries\sffamily,
+    numberstyle=\sffamily\color{black}\footnotesize,
+    stringstyle=\color{black!70!white}\itshape\bfseries\sffamily,
+    basicstyle=\sffamily\footnotesize\color{black!70!white},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=10pt,
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=true,                  
+    tabsize=1
+}
+\lstset{style=mystyle,frame=single}
+
+\makeatletter
+% the original definition in amsmath
+%\def\intkern@{\mkern-6mu\mathchoice{\mkern-3mu}{}{}{}}
+\def\intkern@{\mkern-8mu\mathchoice{\mkern-8mu}{}{}{}}
+\makeatother
+
+\makeatletter
+\newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
+\makeatother
+
+\titlespacing*{\section}{0ex}{2ex}{2ex}
+\titlespacing*{\subsection}{0em}{1ex}{0ex}
+\titlespacing*{\subsubsection}{0ex}{1ex}{0ex}
+\titlespacing*{\paragraph}{0ex}{0ex}{-1ex}
