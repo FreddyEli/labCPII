@@ -1,19 +1,20 @@
 program main
         use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
         implicit none
-        real(dp), parameter::a=-1D0 , b=1D0 , c=-1. , d=1.
-        integer, parameter::m=100 , n=100. !both >=3 and 2k
+        real(dp), parameter::a=-10D0 , b=10D0 , c=-10. , d=10.
+        integer, parameter::m=150 , n=150. !both >=3 and 2k
         real(dp), parameter::h=(b-a)/n , k=(d-c)/m 
         real(dp), parameter::lam=h*h/(k*k) , mu=2*(1+lam) 
         real(dp), parameter::tol=1D-10 , it=100009
         !real(dp):: x(n-1), y(m-1), z, nor
         real(dp):: x(0:n), y(0:m), z, nor
         !real(dp):: w(n-1, m-1), grad(n-1, m-1, 2)
-        real(dp):: w(0:n, 0:m), grad(0:n, 0:m, 2)
+        real(dp):: w(0:n, 0:m), grad(0:n, 0:m, 2), norm
         integer:: i, j, l
 open(99,file="libro.fuente")
 open(100,file="libro.dat")
 open(101,file="libro_grad.dat")
+open(102,file="libro_div.dat")
         do i= 0, n
 x(i)=a+i*h
         enddo
@@ -111,22 +112,27 @@ close(100)
 call gradiente(w,h,k,grad)
 do i=0,n
 do j=0,m
-write(101,*)  x(i), y(j), x(i)+grad(i,j,1), y(j)+grad(i,j,2)
+!norm= sqrt(grad(i,j,1)**2+grad(i,j,2)**2)
+norm=1
+write(101,*)  x(i), y(j), grad(i,j,1)/norm, grad(i,j,2)/norm
+write(101,*)  x(i), y(j), grad(i,j,1)+grad(i,j,2)
 write(99,*)  x(i), y(j), f(h,k,x(i),y(j)), g(x(i),y(j))
-
 enddo
 enddo
 close(99)
 close(101)
+close(102)
 contains
 
         !fuente
 real(dp) function f(h,k,x,y) result(r)
   implicit none
   real(dp), intent(in) ::h,k,x,y
-  if (abs(x-0.0D0)<=h .and. abs(y-0.0D0)<=k) then         
-          r=-1D0
-  else
+  if (abs(x-0D0)<=h/2 .and. abs(y-0D0)<=k/2) then         
+   !       r=+10D0
+ ! else if (abs(x+5D0)<=h/2 .and. abs(y+5D0)<=k/2) then 
+          r=-10D0
+      else
  r=0D0
  endif
 end function f
@@ -169,7 +175,7 @@ g(i,j,1)=(-1.5*w(i,j)+2*w(i+1,j)-0.5*w(i+2,j))/h
 ! Primeros puntos y
   do i = 0, n
   do j = 0, 1
-g(i,j,2)=(-1.5*w(i,j)+2*w(i,j+1)-0.5*w(i,j+1))/k
+g(i,j,2)=(-1.5*w(i,j)+2*w(i,j+1)-0.5*w(i,j+2))/k
   enddo
   enddo
 
@@ -183,14 +189,14 @@ g(i,j,1)=(1.5*w(i,j)-2*w(i-1,j)+0.5*w(i-2,j))/h
 ! Últimos puntos y
   do i = 0, n
   do j = m, m-1, -1
-g(i,j,2)=(1.5*w(i,j)-2*w(i,j-1)+0.5*w(i,j-1))/k
+g(i,j,2)=(1.5*w(i,j)-2*w(i,j-1)+0.5*w(i,j-2))/k
   enddo
   enddo
 
   !Púntos medios 
   do i = 2, n-2
   do j = 2, n-2
-  g(i,j,1)=( w(i-2,j)/12 - 2*w(i+1,j)/3  - w(i+2,j)/12 + 2*w(i+1,j)/3 )/h
+  g(i,j,1)=( w(i-2,j)/12 - 2*w(i-1,j)/3  - w(i+2,j)/12 + 2*w(i+1,j)/3 )/h
   g(i,j,2)=( w(i,j-2)/12 - 2*w(i,j-1)/3  - w(i,j+2)/12 + 2*w(i,j+1)/3 )/k
   enddo
   enddo

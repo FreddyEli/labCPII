@@ -1,0 +1,11 @@
+#!/bin/bash
+grep -v "!" ../components > ../input/components.input 
+wc -l ../input/components.input > ../input/wc.input
+cat ../input/components.input | cut -c 3 | sed 's/ /\n/g'|sort|uniq > ../input/nodes 
+wc -l ../input/nodes > ../input/wc.nodes
+
+#for l in 'R' 'L' 'C' 'V' 'I'; do
+#grep  "^${l}" ../input/components.input | sed "s/^${l} //"> ../input/components.${l,,}
+#cat ../input/components.${l,,}| wc -l> ../input/wc.${l,,}
+#done
+

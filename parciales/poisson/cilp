@@ -1,0 +1,43 @@
+
+set title 'Function solución u'
+set output 'librop_xyz.png'
+set xlabel 'x'
+set ylabel 'y'
+set zlabel 'u(x,y)'
+set size 1
+#set hidden3d
+#set palette colormap rainbow
+#set palette negative
+set palette
+#set view 90,270,1,1
+set view 75,203,1.,1.
+splot 'libro.dat' notitle palette w l
+set title 'Vector field {/:Bold E}'
+#set xlabel '<++>'
+#set ylabel '<++>'
+set output 'libro_grad.png' 
+set size 1
+set key outside
+#set xrange [-1.5:1.5]
+#set yrange [-1.5:1.5]
+set xrange [-12:12]
+set yrange [-12:12]
+plot 'libro_grad.dat'  with vectors head filled lt 2 lw 4 t "{/:Bold E}"
+#plot 'libro_grad.dat' using 1:2:($3):($4) with vectors head filled lt 2 lw 0.5 t "{/:Bold E}"
+#plot 'libro_grad.dat' using 1:2:(0.02*($3-$1)):(0.02*($4-$2)) with vectors head filled lt 2 lw 3 t "{/:Bold E}"
+#set contour
+#set dgrid3d
+#w l palette
+#set hidden3d
+#set xyplane at 0
+##set urange [-3.0 : 3.0]
+#set isosamples 100, 100
+#set vrange [ 1.0 : 3.0]
+#set hidden3d
+#set xyplane at 0
+#set title '<++>'
+#set xlabel '<++>'
+#set ylabel '<++>'
+#set xrange [:]
+#set yrange [:]
+# '<++>' u (1:(3) w l lc "gray30" notitle, \

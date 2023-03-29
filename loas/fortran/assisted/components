@@ -1,0 +1,7 @@
+!Structure 
+! Componnente letter, node 1, node 2 , value
+!Voltage source, DC, 5V
+1 V 1 2 
+2 C 2 3 
+!Resisstor 10 Ohm (assumed linear)
+3 R 3 1 
