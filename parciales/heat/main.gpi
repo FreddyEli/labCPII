@@ -1,0 +1,10 @@
+set term pngcairo size 1280, 960 font "Arial,24"
+set title 'Solución analítica'
+set output 'analytic.png' 
+set size 1
+set xlabel 'x (m)'
+set ylabel 'Temperature (K)'
+set key outside
+#set xrange [-12:12]
+#set yrange [-12:12]
+plot 'libro_grad.dat'  with vectors head filled lt 2 lw 4 t "{/:Bold E}"
