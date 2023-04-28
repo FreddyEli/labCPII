@@ -54,4 +54,5 @@ with open("wave.dat", "w") as dc:
             dc.write(f"{j*k} {i*h} {wave[i,j]}\n")
 
         dc.write(f" \n")
+        dc.write(f" \n")
 
