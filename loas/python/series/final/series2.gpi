@@ -1,0 +1,68 @@
+set term pngcairo size 1280, 960 font "Times,28"
+set output 'series_sim.png'
+set title 'Series RLC circuit simulation'
+set xlabel 'Time (s)'
+set ylabel 'Voltage (V)'
+set y2label 'Current (A)'
+set xrange [:0.0006]
+#set yrange [:]
+#set key outside
+set key bottom right
+p 'capv_test.dat' u 1:2 w l lw 3 lt 7 t 'Voltage' , \
+  'capi_test.dat' u 1:2 w l lw 3 lt 6 dt 4 t 'Current', \
+
+VA_fit= -5.332735563626728
+Vphi= -1.84046945837198
+IA_fit= 23.59012441030877
+Iphi= -3.188239250193643
+alfa= 9803.921568627451
+omega= 44325.09155329412
+f(x)=A*exp(-decay * x)*sin(omega*x+phi)
+
+set output 'series_exp.png'
+p 'outputv_series'  w errorbars lw 3 lt 7 t 'Voltage' , \
+  'outputl_series'  w errorbars lw 3 lt 6 dt 4 t 'Current', \
+
+Exp_V_A_fit= -5.4297020257363195
+Exp_V_omega= 44241.785235647294
+Exp_V_phi= -1.8296690711734793
+Exp_V_decay= 9914.661696815876
+fev(x)=Exp_V_A_fit*exp(-Exp_V_decay * x)*sin(Exp_V_omega*x+Exp_V_phi)
+
+Exp_I_A_fit= 23.59012441030877
+Exp_I_omega= 44268.17467758827
+Exp_I_phi=   -3.388580321749225
+Exp_I_decay= 9803.92030142342
+fei(x)=Exp_I_A_fit*exp(-Exp_I_decay * x)*sin(Exp_I_omega*x+Exp_I_phi)
+ 
+
+unset title
+set output 'series_exp_vs_fitting.png'
+set multiplot layout 2,1 title "Series RLC circuit\nFitting of experimental data" offset 0,0. font "Times,30"
+set origin 0,0
+set size 0.5,.9
+set xlabel 'Time (s)'
+set ylabel 'Voltage (V)'
+set xtics 0.0003
+unset y2label 
+set label "{f_{v,i}(t)=Ae^{-{/Symbol a}t}sin({/Symbol w}t + {/Symbol f})}" at screen 0.53, screen 0.02 center
+set label "A=-5.43" at 0.00033,5.5
+set label "{/Symbol a}=9914.66" at 0.00033,5  
+set label "{/Symbol w}=44241.79" at 0.00033,4.5
+set label "{/Symbol f}=-1.83" at 0.00033,4
+
+p 'outputv_series' ps 2 pt 7 lt 7 t 'Voltage' , \
+  fev(x) lw 6 dt 4 lt 8 t 'fv(x)'
+unset label
+set label "A=24.16" at 0.00033,9
+set label "{/Symbol a}=9967.36" at 0.00033,7.5  
+set label "{/Symbol w}=44268.17" at 0.00033,6  
+set label "{/Symbol f}=-3.39" at 0.00033,4.5
+set ylabel 'Current (A)'
+set origin 0.5,0
+set size 0.5,0.9
+p 'outputl_series' ps 2 pt 7 lt 6 dt 4 t 'Current', \
+  fei(x) lw 6 dt '--' lt 8 t 'fi(x)'
+unset mutliplot 
+
+

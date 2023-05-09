@@ -14,10 +14,9 @@ y = data[:, 1]
 
 # Guess initial values for the parameters
 A_guess = np.max(y) - np.min(y)
-#A_guess = 1.
-omega_guess = 2 * np.pi / (x[-1] - x[0])
-phi_guess = 0
-decay_guess = 3.
+omega_guess = 1 * np.pi / (x[-1] - x[0])
+phi_guess = 0.
+decay_guess = 9800.
 
 # Fit the decaying sine function to the data
 popt, pcov = curve_fit(decaying_sine, x, y, p0=[A_guess, omega_guess, phi_guess, decay_guess])

@@ -24,7 +24,14 @@ popt, pcov = curve_fit(decaying_sine, x, y, p0=[A_guess, omega_guess, phi_guess,
 # Extract the fitted parameters
 A_fit, omega_fit, phi_fit, decay_fit = popt
 
+
+with open("series_parameters.dat", "a") as dc:
+    dc.write(f"Voltage:\n")
+    dc.write(f"A_fit= {A_fit}\n omega= {omega_fit}\n phi= {phi_fit}\n decay= {decay_fit}\n ")
+    dc.write(f"\n")
+
 # Print the results
+print(f"{A_fit} {omega_fit} {phi_fit} {decay_fit}")
 print(f"Frequency: {omega_fit / (2 * np.pi)}")
 print(f"Decaying constant: {decay_fit}")
 print(f"wd: {(omega_fit*omega_fit+ decay_fit*decay_fit )**0.5}")

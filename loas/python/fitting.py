@@ -1,0 +1,53 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the decaying sine function
+def decaying_sine(x, A, omega, phi, decay):
+    return A * np.exp(-decay * x) * np.sin(omega * x + phi)
+
+# Define the Jacobian of the decaying sine function
+def Jacobian(f, x, A, omega, phi, decay, eps):
+    grad_a = ( f(x, A-2*eps, omega, phi, decay)/12 - f(x, A-eps, omega, phi, decay)*2/3 + f(x, A+eps, omega, phi, decay)*2/3 - f(x, A+2*eps, omega, phi, decay)/12)/(eps)
+    grad_o = ( f(x, A, omega-2*eps, phi, decay)/12 - f(x, A, omega-eps, phi, decay)*2/3 + f(x, A, omega+eps, phi, decay)*2/3 - f(x, A, omega+2*eps, phi, decay)/12)/(eps)
+    grad_p = ( f(x, A, omega, phi-2*eps, decay)/12 - f(x, A, omega, phi-eps, decay)*2/3 + f(x, A, omega, phi+eps, decay)*2/3 - f(x, A, omega, phi+2*eps, decay)/12)/(eps)
+    grad_d = ( f(x, A, omega, phi, decay-2*eps)/12 - f(x, A, omega, phi, decay-eps)*2/3 + f(x, A, omega, phi, decay+eps)*2/3 - f(x, A, omega, phi, decay+2*eps)/12)/(eps)
+    return np.column_stack([grad_a, grad_o, grad_p, grad_d])
+
+def Gauss_Newton(f, x, y, A0, o0, p0, d0, eps, maxit, tol):
+    old = new = np.array([A0, o0, p0, d0])
+    for itr in range(maxit):
+        old = new
+        J = Jacobian(f, x, old[0], old[1], old[2], old[3], eps)
+        dy = y - f(x, old[0], old[1], old[2], old[3])
+        new = old + np.linalg.inv(J.T@J)@J.T@dy
+        if np.linalg.norm(old-new) < tol:
+            break
+        return new
+
+# Load the dataset
+data = np.loadtxt('cap_test.dat')  # replace 'data.txt' with the actual filename
+
+# Extract the x and y values from the dataset
+x = data[:, 0]
+y = data[:, 1]
+
+# Guess initial values for the parameters
+A_guess = np.max(y) - np.min(y)
+omega_guess = 14
+phi_guess = 0.3
+decay_guess = 6.5
+
+A_fit, omega_fit, phi_fit, decay_fit = Gauss_Newton(decaying_sine, x, y, A_guess, omega_guess, phi_guess, decay_guess, 1e-15, 5000, 1e-20)
+
+yhat= decaying_sine(x, A_fit, omega_fit, phi_fit, decay_fit)
+
+# Print the results
+print(f"A: {A_fit}")
+print(f"Frequency: {omega_fit / (2 * np.pi)}")
+print(f"Decaying constant: {decay_fit}")
+print(f"phi constant: {phi_fit}")
+print(f"wd: {(omega_fit*omega_fit+ decay_fit*decay_fit )**0.5}")
+
+plt.scatter(x,y)
+plt.plot(x,yhat)
+plt.show()

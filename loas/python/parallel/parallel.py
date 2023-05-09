@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import math
 
 # Define the RLC circuit parameters
-R = 1./12.   # resistance in ohms
-L = 1./50.   # inductance in henries
-C = 2        # capacitance in farads
-V0=-0.14 #Volts
-I0=1 #Amperes i=C dv/dt
+R = 1e-1   # resistance in ohms
+L = 5.1e-6   # inductance in henries
+C = 100e-6      # capacitance in farads
+V0=5.14 #Volts
+I0=1.1 #Amperes i=C dv/dt
 alfa=1./(2*R*C)
 omega=(C*L)**(-0.5)
 
@@ -26,9 +26,9 @@ def f(t, y):
 y0 = np.array([I0, V0/L]) # initial voltage and current
 
 # Define the time step and the time array
-h = 1e-5 # time step in seconds
+h = 1e-6 # time step in seconds
 #t = np.arange(0, 1.5, h) # time array from 0 to 0.02 seconds
-t = np.arange(0, 2.,  h) # time array from 0 to 0.02 seconds
+t = np.arange(0, 1e-3,  h) # time array from 0 to 0.02 seconds
 
 # Implement the fourth-order Runge-Kutta method
 def rk4(f, y0, t, h):
@@ -46,10 +46,15 @@ def rk4(f, y0, t, h):
   #                 # time, voltage in cap, current in cap, step
   #         dc.write(f"{t[i]} {y[i,0]} {y[i,1]*C} {i}\n")
 
-    with open("cap_test.dat", "w") as dc:
+    with open("indci_test.dat", "w") as dc:
         for i in range(0,n-1):
                     # time, voltage in cap, current in cap, step
             dc.write(f"{t[i]} {y[i,0]}\n")
+
+    with open("indcv_test.dat", "w") as dc:
+        for i in range(0,n-1):
+                    # time, voltage in cap, current in cap, step
+            dc.write(f"{t[i]} {y[i,1]*L}\n")
 
   # with open("res_parallel.dat", "w") as dc:
   #     for i in range(0,n-1):
