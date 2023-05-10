@@ -52,28 +52,33 @@ These findings have important implications for the design and analysis of RLC ci
 %----------------------------
 \section{Introduction}
 \subsection{Objectives}
-
 \begin{itemize}\setlength\itemsep{0.25em}
-    \item Measurement of the evolution of the current and voltage that characterise the discharging RLC circuit in parallel and series.
-    \item Computational simulation of the tested circuits and compare the results with the experimental data.
+    \item Measurement of the evolution of the current and voltage that characterise the discharging RLC circuit in a parallel and series configurations.
+    \item Computational simulation of the tested circuits and comparison of the results with the experimental data.
     \item Obtain and compare the type of solution, as well as the defining parameters, such as natural frequency of the system and the dampening factor.
 \end{itemize}
 
 \subsection{The RLC circuit}
-\noindent An RLC circuit is an electrical circuit that consists of a resistor, an inductor, and a capacitor connected together. These circuits are used in a wide range of applications, including in electronics, power systems, and telecommunications. In this report, we will explore the behaviour and characteristics of RLC circuits, their applications, and the mathematical models used to describe their behaviour. We will also discuss the effects of varying the parameters of an RLC circuit, such as the resistance, capacitance, and inductance, on the circuit's performance. Understanding RLC circuits is essential for anyone interested in electronics or electrical engineering, and this report aims to provide a comprehensive overview of the topic.
+\noindent An RLC circuit is an electrical circuit that consists of a resistor, an inductor, and a capacitor connected together. These circuits are used in a wide range of applications, including in electronics, power systems, and telecommunications. In this report, we will explore the behaviour and characteristics of RLC circuits, their applications, and the mathematical models used to describe their behaviour. Understanding the theory behind RLC circuits is essential for designing and analysing more complex electrical systems, and is a fundamental concept in electrical engineering and physics.
 
-An RLC circuit is a type of electrical circuit that includes a resistor (R), an inductor (L), and a capacitor (C) that are connected together in series or parallel. These circuits exhibit complex behaviours, which can be described by mathematical models.
+An RLC circuit is a type of electrical circuit that includes a resistor (R), an inductor (L), and a capacitor (C) that are connected together. The behaviour of an RLC circuit is governed by the interplay between these three circuit elements. The resistor restricts the flow of current in the circuit, the inductor opposes changes in current by inducing an electromotive force (EMF), and the capacitor stores and releases electrical charge.
 
-The behaviour of an RLC circuit is governed by the interplay between the three circuit elements. The resistor restricts the flow of current in the circuit, the inductor opposes changes in current by inducing an electromotive force (EMF), and the capacitor stores and releases electrical charge.
+These circuits exhibit complex behaviours that can be analysed using complex numbers and second order differential equation. For that reason, these type of circuits are often called second order circuits. In consumer devices, RLC circuits are found in a combination of two basic configurations: series and parallel. These equations describe how the voltage and current in the circuit change over time, and can be solved to predict the circuit's behaviour under different conditions.
 
-When an RLC circuit is excited with an electrical signal, such as a voltage or a current, it responds with a natural frequency that depends on the values of R, L, and C. The circuit's natural frequency determines how quickly it can transfer energy between the inductor and the capacitor, and is a key parameter in the circuit's behaviour.
+%When an RLC circuit is excited with an electrical signal, such as a voltage or a current, it responds with a natural frequency that depends on the values of R, L, and C. The circuit's natural frequency determines how quickly it can transfer energy between the inductor and the capacitor, and is a key parameter in the circuit's behaviour.
+In this report, discharging RLC circuits will be covered. This means that no voltage source will be used. Given that the circuit is closed and the capacitor has stored energy in the form of electric charge, $t$ is the time elapsed since the switch was closed, $R$ is the resistance, $L$ the inductance,  and $C$ is the capacitance. As time elapses the capacitor starts to discharge, the energy stored in the capacitor is dissipated as heat in the resistor and magnetic energy in the inductor. Depending on the configuration and the specific values of the three former parameters, the circuit can exhibit three different behaviours: \textit{underdamped}, \textit{critically damped}, and \textit{overdamped}.
 
-The behaviour of RLC circuits can be analysed using differential equations and complex numbers. These equations describe how the voltage and current in the circuit change over time, and can be solved to predict the circuit's behaviour under different conditions.
+Each of these classifications correspond to a behaviour similar to known functions:
+\begin{itemize}\setlength\itemsep{0.25em}
+    \item  The underdamped configurations behaves to a decaying sine function. That is, of the form 
+        \begin{equation} U(t)=Ae^{-\alpha  \sin \qty(\omega t + \phi)}.\end{equation}
+    \item  The critically damped configurations behaves just like an exponential function. That is, of the form 
+        \begin{equation} C(t)=Ae^{\alpha}.\end{equation}
+    \item  The overdamped configurations behaves like a linear combination of exponentials. That is, of the form 
+        \begin{equation} O(t)=Ae^{\alpha}+Be^{\beta} .\end{equation}
+\end{itemize}
 
-Overall, understanding the theory behind RLC circuits is essential for designing and analysing complex electrical systems, and is a fundamental concept in electrical engineering and physics.
-
-RLC circuits are often modelled with a second order differential equation, for that reason, these type of circuits are often called second order circuits. In consumer devices, RLC circuits are found in a combination of two basic configurations: series and parallel. 
-
+In order to figure which of the three pattern we can expect of a circuit, we must first determine de configuration of the components. As stated before, we are only concerned for the \textit{series} and \textit{parallel} cases.
 \subsubsection{RLC in series}
 
 \begin{figure}[ht]
@@ -82,270 +87,71 @@ RLC circuits are often modelled with a second order differential equation, for t
     \caption{An example RLC circuit in a series configuration without a voltage source.}
     \label{fig:seriesRLC}
 \end{figure}
-When the circuit is charged to a certain voltage and then disconnected from the voltage source, the capacitor starts to discharge through the resistor and inductor. The theoretical behavior of the discharging process can be described using Kirchhoff's laws and differential equations.
+According to \cite{bobrow1983analisis}, in order to analyse an RLC circuit in a series configuration given the initial conditions for the voltage ($v_0$) and the current ($I_0$) in the capacitor, one must use Kirchoff's first law  to find the following equation:
+\begin{equation}
+    L\dv{i}{t} + Ri + \frac{1}{C} \int_{-\infty}^t i \dd{t}
+\end{equation}
+This differential equation governs the discharging behaviour of the circuit, where $i$ is the current flowing through the circuit at time $t$, $L$ is the inductance, $R$ is the resistance, and $C$ is the capacitance. From here, it is convenient to center the analysis only on the capacitor, as the equation that describes it,
+\begin{equation}\label{eq:cap}
+    i=C\dv{v}{t},
+\end{equation}
+is useful to obtain the following equation.
+\begin{equation}
+    \dv[2]{v}{t}+\frac{R}{L}\dv{v}{t} + \frac{1}{LC} = 0.
+\end{equation}
+It is here when we have two define two new parameters, $\alpha$ and $\omega_n$, that will indicate the behaviour of the circuit.
+\begin{equation}
+    \alpha = \frac{R}{2L}, \,\,\,\,\,
+    \omega_n = \frac{1}{\sqrt{LC}}.
+\end{equation}
 
+\begin{itemize}\setlength\itemsep{0.25em}
+    \item  If $\alpha$ <$\omega_n$, then the system is underdamped, and the voltage is given by:
+        \begin{equation} V_u(t)=Ae^{-\alpha  \sin \qty(\omega_d t + \phi)}.\end{equation}. 
+        where $\omega_d = \sqrt{\omega_n^2-\alpha^2}$, and both $A$ and $\phi$ are set by the initial conditions.
+    \item  The critically damped configurations behaves just like an exponential function. That is, of the form 
+        \begin{equation} V_c(t)=Ae^{\alpha}.\end{equation}
+        where $A$ is set by the initial conditions.
+    \item  The overdamped configurations behaves like a linear combination of exponentials. That is, of the form 
+        \begin{equation} V_o(t)=Ae^{s_1}+Be^{s_2} .\end{equation}
+        where $s_{1,2} =-\alpha\pm \sqrt{\omega_n^2-\alpha^2}$, and both $A$ and $B$ are set by the initial conditions.
+\end{itemize}
 
-When the switch is closed and the circuit is charged, the capacitor stores energy in the form of electric charge, and the voltage across the capacitor increases according to the equation $Vc(t) = V(1 - e^(-t/RC))$, where V is the initial voltage, t is the time elapsed since the switch was closed, R is the resistance, and C is the capacitance. When the switch is opened and the capacitor starts to discharge, the energy stored in the capacitor is dissipated as heat in the resistor and magnetic energy in the inductor.
-The differential equation governing the discharging behaviour of the circuit is given by $L di/dt + Ri + 1/C \int idt = 0$, where i is the current flowing through the circuit at time t, L is the inductance, R is the resistance, and C is the capacitance. This equation can be solved using the method of integrating factors to obtain an expression for the current as a function of time.
-
-The solution to the differential equation shows that the current through the circuit decreases exponentially over time, as the energy stored in the capacitor is dissipated. The time constant of the circuit is given by RC, and represents the time it takes for the voltage across the capacitor to decrease to $37\%$ of its initial value. The voltage across the capacitor can be calculated using the equation $Vc(t) = V(1 - e^(-t/RC))$, where V is the initial voltage and R and C are the resistance and capacitance, respectively.
-
-In summary, a discharging RLCS circuit in series exhibits exponential decay of the current over time, as the energy stored in the capacitor is dissipated through the resistor and inductor. The behavior of the circuit can be described using Kirchhoff's laws and a differential equation, and the time constant of the circuit can be calculated using the resistance and capacitance.
-
+In all of the above scenarios, one can find the function of the current by differentiation of that of the voltage, according to equation \ref{eq:cap}.
 
 \subsubsection{RLC circuits in parallel}
-
+For the parallel configuration, it is more suitable to describe the evolution of the current in the inductor. Remembering that the equation that describes an ideal inductor is the following,
+\begin{equation}\label{eq:induc}
+    V = L \dv{i}{t}
+\end{equation}
+And given the same initial conditions and parameters that were used in the previous example, by using the same methodology, one can find the equation that characterises the parallel RLC circuit.
+\begin{equation}
+    \dv[2]{i}{t} + \frac{1}{RC}\dv{i}{t} +\frac{1}{LC}{i}
+\end{equation}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\columnwidth]{figures/RLC_parallel.png}
     \caption{An example RLC circuit in a parallel configuration without a voltage source.}
     \label{fig:parallelRLC}
 \end{figure}
-
+With this new differential equation, the parameters $\alpha$ must be redefined as,
+\begin{equation}
+    \alpha = \frac{1}{2RC},
+\end{equation}
+while the rest of the definitions and classifications remain the same as the series configuration, with the exception that now the function represents the current instead of the voltage. The later can be calculated by differentiation, as stated in equation \ref{eq:induc}.
 
 \subsection{The Runge-Kutta 4 method}
-\noindent The Runge-Kutta 4 method is a numerical algorithm used to solve ordinary differential equations (ODEs) by approximating the solution at discrete time steps. The method is a fourth-order, explicit method, meaning that it uses information at the current time step and previous time steps to estimate the solution at the next time step.
+%\noindent The Runge-Kutta 4 method is a numerical algorithm used to solve ordinary differential equations (ODEs) by approximating the solution at discrete time steps. The method is a fourth-order, explicit method, meaning that it uses information at the current time step and previous time steps to estimate the solution at the next time step.
+%
+%The basic idea behind the Runge-Kutta 4 method is to estimate the derivative of the solution at four different points within the time step, and then use a weighted average of these estimates to compute the approximate solution at the end of the time step. This weighted average is called the Runge-Kutta formula, and is calculated using a set of coefficients that depend on the order of the method.
+%
+%The Runge-Kutta 4 method is widely used because it provides a good balance between accuracy and computational efficiency. It is more accurate than lower-order methods such as the Euler method, and can be used to solve a wide range of ODEs with relatively small time steps.
+%
+%To use the Runge-Kutta 4 method, the ODE must first be converted to a system of first-order ODEs. The method then proceeds by iterating through the time steps, using the Runge-Kutta formula to estimate the solution at each time step. The accuracy of the method can be improved by decreasing the size of the time step, although this can come at the cost of increased computational complexity.
+%
+%Overall, the Runge-Kutta 4 method is a powerful tool for solving ODEs numerically, and is widely used in a variety of fields, including physics, engineering, and computer science.
 
-The basic idea behind the Runge-Kutta 4 method is to estimate the derivative of the solution at four different points within the time step, and then use a weighted average of these estimates to compute the approximate solution at the end of the time step. This weighted average is called the Runge-Kutta formula, and is calculated using a set of coefficients that depend on the order of the method.
-
-The Runge-Kutta 4 method is widely used because it provides a good balance between accuracy and computational efficiency. It is more accurate than lower-order methods such as the Euler method, and can be used to solve a wide range of ODEs with relatively small time steps.
-
-To use the Runge-Kutta 4 method, the ODE must first be converted to a system of first-order ODEs. The method then proceeds by iterating through the time steps, using the Runge-Kutta formula to estimate the solution at each time step. The accuracy of the method can be improved by decreasing the size of the time step, although this can come at the cost of increased computational complexity.
-
-Overall, the Runge-Kutta 4 method is a powerful tool for solving ODEs numerically, and is widely used in a variety of fields, including physics, engineering, and computer science.
-%%%%%%%%%%%%%%%%%%%%%%%%%%55
-
-Following \cite[Chapter 5 Initial-Value Problems for Ordinary Differential Equations, p. 259]{burden} we'll first give and introduction to the Runge-Kuta method of order 4 for a single first order equation, then we'll briefly introduce how to reduce a second order equation to two first order equations to finally introduce the Runge-Kuta method of order 4 for a system of six first order equations.
-
-\subsubsection{Runge-Kutta method of order 4}
-    Recall that a first order differential equation has the form:
-    \begin{align}
-        y'=f(t,y), \quad \text{for} \quad a \leq t \leq b, \quad \text{subject to} \quad y(a)=\alpha
-    \end{align}
-    And recall that,
-    supposing that this initial value problem (IVP) is well posed, we will be able to use the Runge-Kutta method of order four to approximate the solution $y$ in this interval.
-    
-    First we will need to pick a number of $n+1$ equally spaced points in the interval $[a,b]$ in order to define the step size $h>0$, the initial $t_0$ and the starting value $y_0$ as:
-    \begin{align*}
-        h&=\dfrac{b-a}{n} \\
-        t_0 &= a \\
-        y_0 &= y(a)=\alpha
-    \end{align*}
-    This now defines in which points of the interval we'll be approximating the function. This points are defined as:
-    \begin{align}
-        t_{n+1}=t_n + h \quad \lor \quad t_{n+1} = t_0 +nh = a +nh
-    \end{align}
-    Now we need to compute what is pretty much the essence of this method, the $ki$'s coefficients, defined as:
-    \begin{align*}
-        k_1&=hf(t_n,y_n) \\
-        k_2&=hf\hspace{0.1em} \left(t_n+\dfrac{h}{2}, y_n + \dfrac{k_1}{2}\right)\\
-        k_3&=hf\hspace{0.1em} \left(t_n+\dfrac{h}{2}, y_n + \dfrac{k_2}{2}\right)\\
-        k_4&=hf\hspace{0.1em} \left(t_n+h, y_n + k_3\right)
-    \end{align*}
-    Note that this computations are actually values of the function $f$, which we may also interpret as slopes of $y$, on different parts of the interval between $t_n$ and $t_{n+1}$. Note that $k_1$ is the slope of $y$ at the beginning of the interval, $k_2$ is the slope at the midpoint of the interval but with $k_1$, $k_3$ is also the value of $y$ in the midpoint but now with $k_2$, and $k_4$ is the slope at the end of the interval using $k_3$ and so, for each interval we get values of how the function behaves, we now define the approximation on this interval with a weighted average as:
-    \begin{align*}
-        y_{n+1}=y_n + \dfrac{1}{6}\Big(k_1+2k_2+2k_3+k_4\Big)
-    \end{align*}
-    These are the ideas of this method and should not be mistaken as either a pseudocode or an algorithm. It's important to say that this method has a local truncation error $O(h^4)$ provided that the solution $y$ has five continuous derivatives i.e. $y\in C^5$.
-    
-\subsubsection{Second Order Differential Equations}
-    Consider the following second order IVP problem:
-    \begin{align*}
-        y''=f(t,y,y'), \quad \text{for} \quad a \leq t \leq b, \quad \text{subject to} \quad y(a)=\alpha_1, \ y'(a)=\alpha_2
-    \end{align*}
-    To attack this kind of problem we can reduce the second order IVP into a system of 2 first order
-    equations. We do this basically by re-naming variables. By assigning the labels $u_1(t)=y(t)$, $u_2(t)=y'(t)$ we get the following system:
-    \begin{align*}
-        \begin{aligned}%[center]
-            \dot{u}_1 &= u_2 \\
-            \dot{u_2} &= f(t,u_1,u_2) \\
-        \end{aligned}
-        \quad\quad
-        \begin{aligned}%[center]
-            u_1(a) &= \alpha_1 \\
-            u_2(a) &= \alpha_2 
-        \end{aligned}
-    \end{align*}
-    Making a problem with an unknown solution into a solvable problem.
-
-\subsubsection{Runge-Kutta method for a system of 2 first order ODE's}
-Now we'll give the algorithm of the RK4 method for a IVP system of 2 first order ODE's. 
-
-Consider a first order IVP system of 2 equations with the form:
-\begin{align*}
-    u'_j=f_j(t,u_1,u_2), \quad a \leq t \leq b, \quad \text{with} \quad u_j(a)=\alpha_j
-\end{align*}
-
-for $j=1,2$ at $n+1$ equally spaced points in the interval $[a,b]$:\par
-
-\begin{itemize}
-    \item[{\bf IN}] endpoints $a$, $b$; integer $n$, initial conditions $\alpha_1$, $\alpha_2$.
-    
-    \item[ {\bf OUT}] approximations $w_j$ to $u_j(t)$ at the $n+1$ values of $t$. 
-    \item[Step 1]
-    set $h=(b-a)/n$; \\
-    \indent\hspace{0.4cm} t=a.
-    
-    \item [Step 2]
-    For $j=1, 2$ set $w_j=\alpha_j$
-    
-    \item[Step 3]
-    \textbf{OUT} $(t, w_1, w_2)$
-    
-    \item[Step 4]
-    For $i=1,...,n$ do steps 5-11 .
-    
-        \subitem Step 5 For $j=1, 2$ set \\
-        \indent\hspace{2.3cm} $k_{1,j}=hf_j(t,w_1,w_2)$
-        
-        \subitem Step 6 For $j = 1, 2$ set \\
-        \indent\hspace{2.3cm} $k_{2,j}=hf_j \left(t+\dfrac{h}{2},w_1+\dfrac{1}{2}k_{1,1}, w_w+\dfrac{1}{2}k_{1,w}\right)$
-        
-        \subitem Step 7 For $j = 1, 2$ set \\
-        \indent\hspace{2.3cm} $k_{3,j}=hf_j \left(t+\dfrac{h}{2},w_1+\dfrac{1}{2}k_{2,1}, w_2 +\dfrac{1}{2}k_{2,2}\right)$
-        
-        \subitem Step 8 For $j = 1, 2$ set \\
-        \indent\hspace{2.3cm} $k_{4,j}=hf_j \left(t+\dfrac{h}{2},w_1+\dfrac{1}{2}k_{3,1}, w_2+\dfrac{1}{2}k_{3,2}\right)$
-        
-        \subitem Step 9 For $j = 1, 2$ set \\
-        \indent\hspace{2.3cm} $w_j = w_j + \dfrac{1}{6}\qty\Bigg(k_{1,j} + 2k_{2,j} + 2k_{3,j} + k_{4,j})$
-        
-        \subitem Step 10 Set $t=a + ih$
-        
-        \subitem {\bf OUT} $(t, w_1, w_2)$.
-    
-    \item[Step 12] STOP
-\end{itemize}
-
-%%%%%%%%%%%
-
-\subsection{Least squares}
-\subsubsection{Linear problem}
-The least squares method is a mathematical technique used to find the best-fit line or curve that describes the relationship between two or more variables. It is commonly used in regression analysis to determine the relationship between a dependent variable and one or more independent variables.
-
-The basic idea behind the least squares method is to minimize the sum of the squared differences between the observed data points and the predicted values of the dependent variable based on the independent variable(s). In other words, the method seeks to find the line or curve that minimizes the sum of the squared errors between the predicted values and the actual observed values.
-
-To use the least squares method, the data points are first plotted on a graph, and a line or curve is drawn that represents the relationship between the variables. The line or curve is then adjusted iteratively until the sum of the squared errors is minimized.
-
-The least squares method is widely used in fields such as statistics, engineering, and physics, and can be used to analyse a wide range of data sets, including experimental data, survey data, and financial data. The method is robust and flexible, and can be used to fit linear and non-linear relationships between variables.
-
-Overall, the least squares method is a powerful tool for analysing data and finding the best-fit line or curve that describes the relationship between variables. It is widely used in a variety of fields and has many practical applications.
-
-\subsubsection{Non-linear problem}
-\begin{equation}
-    y = f(x;\beta) + \epsilon,\,\,\,\,\,f(X) - \text{not linear}
-\end{equation}
-
-\begin{equation}
-    r_i = y_i - f(x_i;\beta)
-\end{equation}
-
-\begin{equation}
-    L= \sum_i r^2_i,  \,\,\,\,\, \min_\beta L, \,\,\,\,\, f(x;\beta) \neq x^T \beta
-\end{equation}
-
-\begin{equation}
-    \grad_\beta=0
-\end{equation}
-
-The system of equations is not linear.
-
-This can be solved iteratively with the Newton-Raphson method, with an initial guess.
-
-\begin{equation}
-    x_{i+1}= x_i - \frac{f(x_i)}{f'(x_i)}
-\end{equation}
-
-\begin{equation}
-    x_{i+1}= x_i - \frac{f'(x_i)}{f''(x_i)}
-    = x_i -(\laplacian_x f)^{-1} \grad_x f
-\end{equation}
-
-The calculation of the Hessian can be complicated, so it if often approximated.
-
-\begin{equation}
-    \nabla_{\beta_j} L = \sum_i 2r_i \cdot \pdv{r_i}{\beta_j}
-    =-2\sum_i r_i \cdot \pdv{f_i}{\beta_j} = -2\cdot J^T \cdot r
-\end{equation}
-
-\begin{equation}
-    J=
-    \mqty(\pdv{f_1}{\beta_1} & \hdots &\pdv{f_1}{\beta_p}\\
-    \vdots & \ddots & \vdots \\
-    \pdv{f_n}{\beta_1} & \cdots & d\pdv{f_n}{\beta_p}), 
-\,\,\,\,\,  
-\,\,\,\,\,  
-    r = \mqty( r_1\\ \vdots \\ r_n)
-\end{equation}
-
-
-\begin{equation}
-    \laplacian_{\beta_j\beta_k} L = -2 \sum_i \qty(- \pdv{f_i}{\beta_k}\cdot \pdv{f_i}{\beta_j} + \cancel{ r_j \pdv{f_i}{\beta_j}{\beta_k}})  \approx \sum_i \pdv{f_i}{\beta_k}\pdv{f_i}{\beta_j} = 2\cdot J^T\cdot J
-\end{equation}
-
-\begin{equation}
-    \beta_{t+1}= \beta_t - \qty(\laplacian_\beta L)^{-1} \nabla_\beta L \approx \beta_t - \qty(2\cdot J_t^T\cdot J_t)^{-1}\qty(-2 \cdot J^T_t \cdot r_t)
-\end{equation}
-
-
-\begin{equation}
-    \boxed{
-    \beta_{t+1} \approxeq \beta_t + \qty(J_t^T\cdot J_t)^{-1}\qty(\cdot J^T_t \cdot r_t)
-    }
-\end{equation}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Numerical methodology
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Methodology}
-\subsection{Circuit}
-To measure the voltage and current of an RLC circuit in both series and parallel configurations, the following methodology can be used:
-
-Prepare the RLC circuit by connecting the components in the desired configuration (series or parallel).
-
-Power on the circuit and wait for it to reach a steady-state.
-
-Use a multimeter to measure the voltage across the resistor (Vr), capacitor (Vc), and inductor (VL) in the circuit. To measure the voltage in parallel, connect the multimeter in parallel with the component being measured. To measure the voltage in series, connect the multimeter in series with the component being measured.
-
-Use a second multimeter to measure the current flowing through the circuit. To measure the current in series, connect the multimeter in series with the circuit. To measure the current in parallel, connect the multimeter in parallel with the circuit.
-
-Record the voltage and current measurements in a table, along with any relevant information about the circuit configuration and component values.
-
-Repeat steps 3-5 for different values of the frequency or other relevant variables, to observe changes in the behavior of the circuit.
-
-Analyze the data to calculate the impedance of the circuit, using the equation Z = V/I, where Z is the impedance, V is the voltage, and I is the current. For series circuits, the impedance is equal to the sum of the resistance, inductive reactance, and capacitive reactance. For parallel circuits, the impedance is equal to the reciprocal of the sum of the reciprocals of the resistance, inductive reactance, and capacitive reactance.
-
-Plot the data on a graph to visualize the behavior of the circuit, and compare the results for different circuit configurations and component values.
-
-Overall, the methodology for measuring the voltage and current of an RLC circuit involves using multimeters to measure the voltage and current, recording the measurements, and analyzing the data to calculate the impedance and visualize the behavior of the circuit.
-
-\subsection{Simulation}
-To perform computational simulation of RLC circuits, the following methodology can be used:
-
-Choose a suitable software package for simulating RLC circuits, such as LTspice, Multisim, or PSpice.
-
-Create a circuit schematic using the software, with the components arranged in the desired configuration (series or parallel).
-
-Assign appropriate values for the resistance, inductance, and capacitance of the components in the circuit.
-
-Set up the simulation parameters, such as the time step and simulation time.
-
-Run the simulation and collect data on the voltage and current at various points in the circuit, as well as other relevant parameters such as power dissipation and frequency response.
-
-Analyze the simulation data using software tools, such as MATLAB or Python, to calculate the impedance of the circuit and visualize the behavior of the circuit.
-
-Compare the results of the simulation with theoretical calculations, to validate the accuracy of the simulation.
-
-Perform sensitivity analysis by varying the values of the components in the circuit to observe how changes affect the behavior of the circuit.
-
-Document the simulation results and include them in the report, along with relevant graphs and tables.
-
-Overall, the methodology for simulating RLC circuits involves creating a circuit schematic, assigning component values, running a simulation, analyzing the data, and validating the results. By using software tools to simulate RLC circuits, it is possible to study the behavior of circuits under different conditions and to gain a deeper understanding of their characteristics.
-\subsubsection{Método de diferencias finitas para problemas lineales}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Analysis of numerical results
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Following \cite[Chapter 5 Initial-Value Problems for Ordinary Differential Equations, p. 259]{burden} we'll first give and introduction to the Runge-Kuta method of order 4 for a single first order equation, then we'll briefly introduce how to reduce a second order equation to two first order equations to finally introduce the Runge-Kuta method of order 4 for a system of six first order equations.
+Following  Burden 2015 \cite{burden2015numerical} we'll first give and introduction to the Runge-Kuta method of order 4 for a single first order equation, then we'll briefly introduce how to reduce a second order equation to two first order equations to finally introduce the Runge-Kuta method of order 4 for a system of six first order equations.
 
 \subsubsection{Runge-Kutta method of order 4}
     Recall that a first order differential equation has the form:
@@ -448,11 +254,141 @@ for $j=1,2$ at $n+1$ equally spaced points in the interval $[a,b]$:\par
 \end{itemize}
 
 \subsection{Parameter calculations}
+Once the functions of the voltage and current are obtained, either numerically or experimentally; we would like to have a reliable way to compare our solutions with their analytical counterpart. One method can be to calculate some variation of the mean error or percent error of the samples; but, since we know the form the function will adopt, just with a few parameters yet to be defined, we can instead calculate these parameters for each dataset and compare how well they resemble each other.
 
-<++>
+This is a simple optimisation problem that can be solved by the least squares method.
+\subsection{Least squares}
+The least squares method is a mathematical technique used to find the best-fit curve (usually a polynomial) that describes the relationship between two or more variables. It is commonly used in regression analysis to determine the relationship between a dependent variable and one or more independent variables.
+
+The basic idea behind the least squares method is to minimize the sum of the squared differences between the observed data points and the predicted values of the dependent variable based on the independent variable(s). In other words, the method seeks to find the function that minimizes the sum of the squared errors between the predicted values and the actual observed values.
+
+\begin{equation}
+    y = f(x;\beta) + \epsilon
+\end{equation}
+
+\begin{equation}
+    r_i = y_i - f(x_i;\beta)
+\end{equation}
+
+\begin{equation}
+    S= \sum_i r^2_i,  \,\,\,\,\, \min_\beta S
+\end{equation}
+Finding the minimum of the above function is as simple as equation the gradient to zero.
+\begin{equation}
+    \grad_\beta S=0
+\end{equation}
+The problem ends up reducing to solving a matrix problem since
+\begin{equation}\label{eq:min}
+    \pdv{S}{\beta_j} = 2\sum_i r_i \pdv{r_i}{\beta_j}= -2\sum_i \pdv{f(x;\beta)}{\beta_j}=0,\,\,\,\, j=1,...,m 
+\end{equation}
+
+\subsubsection{Non-linear problem}
+As we know the type of functions we will be dealing with, we know that they will not be linear. This difficult the parameter calculations since the derivative needed in equation \ref{eq:min} would not necessarily be linear, meaning we could not construct the expected matrix to solve the problem.
+
+\begin{equation}
+    L= \sum_i r^2_i,  \,\,\,\,\, \min_\beta L, \,\,\,\,\, f(x;\beta) \neq x^T \beta
+\end{equation}
+This new problem cannot be solved by regular least squares theory. The solution must be approximated, using an initial guess for the array of parameters and improving on it with the next iteration.
+We can use even the simplest root finding algorithm, the Newton-Raphson's method:
+\begin{equation}
+    x_{i+1}= x_i - \frac{f(x_i)}{f'(x_i)}
+\end{equation}
+Nevertheless, since we want to find the root of the derivative of a function and not the function itself, we must modify the algorithm a bit, changing the function for its derivative and the derivative for the second derivative, as follows.
+\begin{equation}
+    x_{i+1}= x_i - \frac{f'(x_i)}{f''(x_i)}
+    = x_i -(\laplacian_x f)^{-1} \grad_x f
+\end{equation}
+
+This, in essence, implies the calculation of the Hessian, which can be a complicated process, so it if often approximated. Given that we can express the gradient in terms of the Jacobian matrix,
+\begin{equation}
+    \nabla_{\beta_j} S = \sum_i 2r_i \cdot \pdv{r_i}{\beta_j}
+    =-2\sum_i r_i \cdot \pdv{f_i}{\beta_j} = -2\cdot J^T \cdot r
+\end{equation}
+where,
+\begin{equation}
+    J=
+    \mqty(\pdv{f_1}{\beta_1} & \hdots &\pdv{f_1}{\beta_p}\\
+    \vdots & \ddots & \vdots \\
+    \pdv{f_n}{\beta_1} & \cdots & d\pdv{f_n}{\beta_p}), 
+\,\,\,\,\,  
+\,\,\,\,\,  
+    r = \mqty( r_1\\ \vdots \\ r_n).
+\end{equation}
+
+Then we can also express the Hessian only with the Jacobian, assuming that the cross derivatives as negligible small.
+\begin{equation}
+    \laplacian_{\beta_j\beta_k} L = -2 \sum_i \qty(- \pdv{f_i}{\beta_k}\cdot \pdv{f_i}{\beta_j} + \cancel{ r_j \pdv{f_i}{\beta_j}{\beta_k}})  \approx \sum_i \pdv{f_i}{\beta_k}\pdv{f_i}{\beta_j} = 2\cdot J^T\cdot J
+\end{equation}
+
+With the above equations, we can create an iterative method to obtain the needed parameters.
+
+\begin{equation}
+    \beta_{t+1}= \beta_t - \qty(\laplacian_\beta L)^{-1} \nabla_\beta L \approx \beta_t - \qty(2\cdot J_t^T\cdot J_t)^{-1}\qty(-2 \cdot J^T_t \cdot r_t)
+\end{equation}
+
+
+\begin{equation}
+    \boxed{
+    \beta_{t+1} \approxeq \beta_t + \qty(J_t^T\cdot J_t)^{-1}\qty(\cdot J^T_t \cdot r_t)
+    }
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Numerical methodology
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Methodology}
+\subsection{Circuit}
+To measure the voltage and current of an RLC circuit in both series and parallel configurations, the following methodology can be used:
+
+Prepare the RLC circuit by connecting the components in the desired configuration (series or parallel).
+
+Power on the circuit and wait for it to reach a steady-state.
+
+Use a multimeter to measure the voltage across the resistor (Vr), capacitor (Vc), and inductor (VL) in the circuit. To measure the voltage in parallel, connect the multimeter in parallel with the component being measured. To measure the voltage in series, connect the multimeter in series with the component being measured.
+
+Use a second multimeter to measure the current flowing through the circuit. To measure the current in series, connect the multimeter in series with the circuit. To measure the current in parallel, connect the multimeter in parallel with the circuit.
+
+Record the voltage and current measurements in a table, along with any relevant information about the circuit configuration and component values.
+
+Repeat steps 3-5 for different values of the frequency or other relevant variables, to observe changes in the behavior of the circuit.
+
+Analyze the data to calculate the impedance of the circuit, using the equation Z = V/I, where Z is the impedance, V is the voltage, and I is the current. For series circuits, the impedance is equal to the sum of the resistance, inductive reactance, and capacitive reactance. For parallel circuits, the impedance is equal to the reciprocal of the sum of the reciprocals of the resistance, inductive reactance, and capacitive reactance.
+
+Plot the data on a graph to visualize the behavior of the circuit, and compare the results for different circuit configurations and component values.
+
+Overall, the methodology for measuring the voltage and current of an RLC circuit involves using multimeters to measure the voltage and current, recording the measurements, and analyzing the data to calculate the impedance and visualize the behavior of the circuit.
+
+\subsection{Simulation}
+To perform computational simulation of RLC circuits, the following methodology can be used:
+
+Choose a suitable software package for simulating RLC circuits, such as LTspice, Multisim, or PSpice.
+
+Create a circuit schematic using the software, with the components arranged in the desired configuration (series or parallel).
+
+Assign appropriate values for the resistance, inductance, and capacitance of the components in the circuit.
+
+Set up the simulation parameters, such as the time step and simulation time.
+
+Run the simulation and collect data on the voltage and current at various points in the circuit, as well as other relevant parameters such as power dissipation and frequency response.
+
+Analyze the simulation data using software tools, such as MATLAB or Python, to calculate the impedance of the circuit and visualize the behavior of the circuit.
+
+Compare the results of the simulation with theoretical calculations, to validate the accuracy of the simulation.
+
+Perform sensitivity analysis by varying the values of the components in the circuit to observe how changes affect the behavior of the circuit.
+
+Document the simulation results and include them in the report, along with relevant graphs and tables.
+
+Overall, the methodology for simulating RLC circuits involves creating a circuit schematic, assigning component values, running a simulation, analyzing the data, and validating the results. By using software tools to simulate RLC circuits, it is possible to study the behavior of circuits under different conditions and to gain a deeper understanding of their characteristics.
+
 
 \section{Results}
-\subsection{Series RLC circuit}
+The computational code, given in the apprendix section, produced an output file that contains the evolution of the current and voltage through a specific component of the circuit, given that the voltage between and current passing through any given point in the circuits can be calculated with simple arithmetic calculations based on the values of the resistant inductance or capacitance of the components. For that reason, only one function is needed for characterising the whole configuration.
+
+In order to verify the validity of the simulation a comparison with other two functions was decided: an analytic method and an experimental one. The analytic method is the solution given in previous sections, meanwhile the experimental one is the real live measurements given by replicating the circuits. 
+
+For the serires circuit the voltage and current for the capacitor in the circuit was found. As for the values of the components that were used, it is clear that we are dealing with an underdemped behaviour, meanin the function is expected to be of the form of equation \label{eq:decayingsine}.   
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/series_exp_vs_fitting.png}
@@ -464,7 +400,7 @@ for $j=1,2$ at $n+1$ equally spaced points in the interval $[a,b]$:\par
     \centering
     \includegraphics[width=0.9\textwidth]{figures/series_sim_vs_ana.png}
     \caption{Experimental data and fitting for the series RLC circuit.}
-    \label{fig:series_evf}
+\label{fig:series_sva}
 \end{figure}
 
 \begin{figure}[ht]
@@ -478,8 +414,13 @@ for $j=1,2$ at $n+1$ equally spaced points in the interval $[a,b]$:\par
     \centering
     \includegraphics[width=0.9\textwidth]{figures/parallel_sim_vs_ana.png}
     \caption{Experimental data and fitting for the parallel RLC circuit.}
-    \label{fig:parallel_evf}
+    \label{fig:parallel_sva}
 \end{figure}
+
+
+
+
+\section{Analysis}
 
 %\begin{table}[!ht]
 %    \centering
@@ -499,7 +440,6 @@ for $j=1,2$ at $n+1$ equally spaced points in the interval $[a,b]$:\par
 %    \caption{AAA}
 %    \label{tab:series}
 %\end{table}
-\section{Analysis}
 
 \begin{table}[!ht]
     \centering
